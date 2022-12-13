@@ -3,6 +3,7 @@ public class Main {
         System.out.println("babanas locas!");
 
         System.out.println("Teste");
+        System.out.println("teste2");
     }
 
 
