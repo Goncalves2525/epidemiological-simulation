@@ -5,6 +5,8 @@ public class Main {
         System.out.println("Teste");
         System.out.println("teste2");
         System.out.println("Teste");
+        System.out.println("teste sobreposição");
+        System.out.println("sync");
     }
 
 
