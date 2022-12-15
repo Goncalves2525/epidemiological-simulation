@@ -2,21 +2,21 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
-    static Scanner sc = new Scanner(System.in);
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         System.out.println(args);
         if(args == null){
 
         }
         else{
         }
-        mostrarMenuOpcoes();
-
+        mostrarMenuOpcoes(sc);
 
     }
 
-    public static void mostrarMenuOpcoes(){
+    public static void mostrarMenuOpcoes(Scanner sc){
+
         int[] arrayOpcoes = new int[] {1, 2, 3, 4};
         boolean opcaoValida = false;
         int opcao = 0;
