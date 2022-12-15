@@ -18,7 +18,7 @@ public class Main {
 
     public static void mostrarMenuOpcoes(){
         int[] arrayOpcoes = new int[] {1, 2, 3, 4};
-
+        boolean opcaoValida = false;
         int opcao = 0;
         do{
             System.out.println("Bem vindo!");
@@ -35,20 +35,24 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("opçao1");
+                    opcaoValida = true;
                     break;
                 case 2:
                     System.out.println("opçao2");
+                    opcaoValida = true;
                     break;
                 case 3:
                     System.out.println("opçao3");
+                    opcaoValida = true;
                     break;
                 case 4:
                     System.out.println("opçao4");
+                    opcaoValida = true;
                     break;
                 default:
                     break;
             }
-        }while (opcao != 0);
+        }while (!opcaoValida);
     }
 
 
@@ -71,6 +75,27 @@ public class Main {
         }
 
         return yn;
+    }
+
+    //−β.S.I
+    public static double derivadaSOrdemT(double beta, double s, double i){
+        double result = 0;
+
+        return result;
+    }
+
+    //ρ.β.S.I − γ.I + α.R
+    public static double derivadaIOrdemT(double p ){
+        double result = 0;
+
+        return result;
+    }
+
+    //γ.I − α.R + (1 − ρ).β.S.I
+    public static double derivadaROrdemT(){
+        double result = 0;
+
+        return result;
     }
 
     public static double f(double x, double y){
