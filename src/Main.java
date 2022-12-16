@@ -64,14 +64,14 @@ public class Main {
 
 
         for (i = 0; i < n; i ++){
-            k1 = h * f(x0,y0);
-            k2 = h * f(x0 + h/2, y0 + k1/2);
-            k3 = h * f(x0 + h/2, y0 + k2/2);
-            k4 = h * f(x0 + h,y0 + k3);
-            k = (k1 + 2 * k2 + 2 * k3 + k4)/6;
-            yn = y0 +k;
-            x0 = x0 + h;
-            y0 = yn;
+//            k1 = h * f(x0,y0);
+//            k2 = h * f(x0 + h/2, y0 + k1/2);
+//            k3 = h * f(x0 + h/2, y0 + k2/2);
+//            k4 = h * f(x0 + h,y0 + k3);
+//            k = (k1 + 2 * k2 + 2 * k3 + k4)/6;
+//            yn = y0 +k;
+//            x0 = x0 + h;
+//            y0 = yn;
         }
 
         return yn;
@@ -79,28 +79,48 @@ public class Main {
 
     //−β.S.I
     public static double derivadaSOrdemT(double beta, double s, double i){
-        double result = 0;
-
-        return result;
+        return -beta * s * i;
     }
 
     //ρ.β.S.I − γ.I + α.R
-    public static double derivadaIOrdemT(double p ){
-        double result = 0;
-
-        return result;
+    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r ){
+        return ro * beta * s * i - gama * i + alfa * r;
     }
 
     //γ.I − α.R + (1 − ρ).β.S.I
-    public static double derivadaROrdemT(){
-        double result = 0;
-
-        return result;
+    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s){
+        return gama * i - alfa * r + (1 - ro) * beta * s * i;
     }
 
-    public static double f(double x, double y){
-        double result = 0;
 
-        return result;
+    public static double[] euler(int n, double h, int N, double beta, double gama, double ro, double alfa){
+        //as 3 funções a retornar após o método
+        double[] funcoes = new double[3];
+
+        //As 3 funções
+        double sn = 0;
+        double in = 0;
+        double rn = 0;
+
+        //Valores iniciais das 3 funções
+        double s0 = N - 1;
+        double i0 = 1;
+        double r0 = 0;
+
+        for (int i = 0; i < n; i++) {
+            sn = s0 + h * derivadaSOrdemT(beta, s0, i0);
+            in = i0 + h * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
+            rn = r0 + h * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
+
+            s0 = sn;
+            i0 = in;
+            r0 = rn;
+        }
+
+        funcoes[0] = sn;
+        funcoes[1] = in;
+        funcoes[2] = rn;
+
+        return funcoes;
     }
 }
