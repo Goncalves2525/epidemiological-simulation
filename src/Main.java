@@ -107,12 +107,13 @@ public class Main {
         double i0 = 1;
         double r0 = 0;
 
+        //Precisamos de saber quantos passos tem um dia para podermos exportar devidamente para ficheiro csv
         double passosNumDia = 1 / h;
+
         double[][] matriz = new double[dias][3];
 
         for (int i = 0; i < dias; i++) {
             for (int j = 0; j < passosNumDia; j++) {
-
                 sn = s0 + 0.1 * derivadaSOrdemT(beta, s0, i0);
                 in = i0 + 0.1 * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
                 rn = r0 + 0.1 * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
@@ -120,8 +121,6 @@ public class Main {
                 s0 = sn;
                 i0 = in;
                 r0 = rn;
-
-
             }
             matriz[i][0] = sn;
             matriz[i][1] = in;
