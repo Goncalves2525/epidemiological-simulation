@@ -93,7 +93,7 @@ public class Main {
     }
 
 
-    public static double[] euler(int n, double h, int N, double beta, double gama, double ro, double alfa){
+    public static double[][] euler(int dias, int n, double h, int N, double beta, double gama, double ro, double alfa){
         //as 3 funções a retornar após o método
         double[] funcoes = new double[3];
 
@@ -107,20 +107,29 @@ public class Main {
         double i0 = 1;
         double r0 = 0;
 
-        for (int i = 0; i < n; i++) {
-            sn = s0 + h * derivadaSOrdemT(beta, s0, i0);
-            in = i0 + h * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
-            rn = r0 + h * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
+        double passosNumDia = 1 / h;
+        double[][] matriz = new double[dias][3];
 
-            s0 = sn;
-            i0 = in;
-            r0 = rn;
+        for (int i = 0; i < dias; i++) {
+            for (int j = 0; j < passosNumDia; j++) {
+
+                sn = s0 + 0.1 * derivadaSOrdemT(beta, s0, i0);
+                in = i0 + 0.1 * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
+                rn = r0 + 0.1 * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
+
+                s0 = sn;
+                i0 = in;
+                r0 = rn;
+
+
+            }
+            matriz[i][0] = sn;
+            matriz[i][1] = in;
+            matriz[i][2] = rn;
+
+
         }
 
-        funcoes[0] = sn;
-        funcoes[1] = in;
-        funcoes[2] = rn;
-
-        return funcoes;
+        return matriz;
     }
 }
