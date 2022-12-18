@@ -1,19 +1,67 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(System.in);
-        System.out.println(args);
-        if(args == null){
 
-        }
-        else{
-        }
+        //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
+        int numLinhas = contarLinhasFicheiro()-1;
+
+        //Array dos nomes
+        String [] arrNomes = new String[numLinhas];
+        preencherNomes(arrNomes);
+
+        //Array de Valores
+        double [][] arrValores = new double[numLinhas][4];
+        preencherValores(arrValores);
+
+
         mostrarMenuOpcoes(sc);
 
     }
+
+    private static int contarLinhasFicheiro() throws FileNotFoundException {
+        int cont = 0;
+        String ficheiroIn = "entrada.csv";
+        Scanner impor = new Scanner (new File(ficheiroIn));
+        while (impor.hasNextLine()) {
+            impor.nextLine();
+            cont++;
+        }
+        impor.close();
+        return cont;
+    }
+
+    private static void preencherNomes(String [] arrNomes) throws FileNotFoundException {
+        String ficheiroIn = "entrada.csv";
+        Scanner impor = new Scanner (new File(ficheiroIn));
+        impor.nextLine();
+        for (int i = 0; i < arrNomes.length; i++) {
+            String[] itensDaLinha = impor.nextLine().split(";");
+            arrNomes[i]=itensDaLinha[0];
+        }
+        impor.close();
+    }
+
+    private static void preencherValores(double [][] arrValores) throws FileNotFoundException {
+        String ficheiroIn = "entrada.csv";
+        Scanner impor = new Scanner (new File(ficheiroIn));
+        impor.nextLine();
+        for (int i = 0; i < arrValores.length; i++) {
+            String variavelApoio = impor.nextLine();
+            variavelApoio = variavelApoio.replace(',', '.');
+            String[] itensDaLinha = variavelApoio.split(";");
+            for (int j = 1; j < itensDaLinha.length; j++) {
+                arrValores[i][j-1]=Double.parseDouble(itensDaLinha[j]);
+            }
+        }
+        impor.close();
+    }
+
 
     public static void mostrarMenuOpcoes(Scanner sc){
 
