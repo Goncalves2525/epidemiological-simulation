@@ -8,26 +8,48 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(System.in);
 
+        //Pede o nome do ficheiro de entrada de dados e verifica se é válido
+        String nomeFicheiroIn = nomeFicheiroVerificado(sc);
+
         //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
-        int numLinhas = contarLinhasFicheiro()-1;
+        int numLinhas = contarLinhasFicheiro(nomeFicheiroIn)-1;
 
         //Array dos nomes
         String [] arrNomes = new String[numLinhas];
-        preencherNomes(arrNomes);
+        preencherNomes(arrNomes,nomeFicheiroIn);
 
         //Array de Valores
         double [][] arrValores = new double[numLinhas][4];
-        preencherValores(arrValores);
+        preencherValores(arrValores,nomeFicheiroIn);
 
 
         mostrarMenuOpcoes(sc);
 
     }
 
-    private static int contarLinhasFicheiro() throws FileNotFoundException {
+    private static String nomeFicheiroVerificado(Scanner sc) {
+        String nomeFicheiroIn = " ";
+        boolean nomeValido = false;
+
+        while (!nomeValido) {
+            System.out.print("Escreve o nome do ficheiro de entrada de dados em formato .csv: ");
+            nomeFicheiroIn = sc.next();
+            File impor = new File(nomeFicheiroIn);
+
+            if (impor.exists()) {
+                // o ficheiro existe, podemos abri-lo
+                nomeValido = true;
+            } else {
+                // o ficheiro não existe, pedimos de novo o nome do ficheiro
+                System.out.println("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
+            }
+        }
+        return nomeFicheiroIn;
+    }
+
+    private static int contarLinhasFicheiro(String nomeFicheiroIn) throws FileNotFoundException {
         int cont = 0;
-        String ficheiroIn = "entrada.csv";
-        Scanner impor = new Scanner (new File(ficheiroIn));
+        Scanner impor = new Scanner (new File(nomeFicheiroIn));
         while (impor.hasNextLine()) {
             impor.nextLine();
             cont++;
@@ -36,9 +58,8 @@ public class Main {
         return cont;
     }
 
-    private static void preencherNomes(String [] arrNomes) throws FileNotFoundException {
-        String ficheiroIn = "entrada.csv";
-        Scanner impor = new Scanner (new File(ficheiroIn));
+    private static void preencherNomes(String [] arrNomes,String nomeFicheiroIn) throws FileNotFoundException {
+        Scanner impor = new Scanner (new File(nomeFicheiroIn));
         impor.nextLine();
         for (int i = 0; i < arrNomes.length; i++) {
             String[] itensDaLinha = impor.nextLine().split(";");
@@ -47,9 +68,8 @@ public class Main {
         impor.close();
     }
 
-    private static void preencherValores(double [][] arrValores) throws FileNotFoundException {
-        String ficheiroIn = "entrada.csv";
-        Scanner impor = new Scanner (new File(ficheiroIn));
+    private static void preencherValores(double [][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {
+        Scanner impor = new Scanner (new File(nomeFicheiroIn));
         impor.nextLine();
         for (int i = 0; i < arrValores.length; i++) {
             String variavelApoio = impor.nextLine();
