@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -8,8 +7,17 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(System.in);
 
-        //Pede o nome do ficheiro de entrada de dados e verifica se é válido
-        String nomeFicheiroIn = nomeFicheiroVerificado(sc);
+        //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
+        String nomeFicheiroIn = verificaFicheiro(sc);
+
+        //Pede e verifica intervalo de passo de integração
+        double h = verificaPassoIntegracao(sc);
+
+        //Pede e verifica tamanho da população
+        int N = verificaTamanhoPopulacao(sc);
+
+        //Pede e verifica numero de dias da análise
+        int dias = verificaNumeroDias(sc);
 
         //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
         int numLinhas = contarLinhasFicheiro(nomeFicheiroIn)-1;
@@ -27,24 +35,77 @@ public class Main {
 
     }
 
-    private static String nomeFicheiroVerificado(Scanner sc) {
+
+
+    private static String verificaFicheiro(Scanner sc) throws FileNotFoundException {
         String nomeFicheiroIn = " ";
         boolean nomeValido = false;
+        System.out.print("Escreva o nome do ficheiro de entrada de dados em formato .csv: ");
 
         while (!nomeValido) {
-            System.out.print("Escreve o nome do ficheiro de entrada de dados em formato .csv: ");
             nomeFicheiroIn = sc.next();
-            File impor = new File(nomeFicheiroIn);
+            File importt = new File(nomeFicheiroIn);
 
-            if (impor.exists()) {
+            if (importt.exists()) {
                 // o ficheiro existe, podemos abri-lo
-                nomeValido = true;
+                // verificamos agora se não está vazio
+                Scanner impor = new Scanner (new File(nomeFicheiroIn));
+                if (impor.hasNextLine()) {
+                    nomeValido = true;
+                }else {
+                    System.out.print("O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: ");
+                }
+                    impor.close();
             } else {
                 // o ficheiro não existe, pedimos de novo o nome do ficheiro
-                System.out.println("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
+                System.out.print("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
             }
         }
         return nomeFicheiroIn;
+    }
+
+    private static double verificaPassoIntegracao(Scanner sc) {
+        double h = -1;
+        while (verificaIntervaloDoisNumeros(h,0,1)==false) {
+            System.out.print("Introduza o valor do passo do intervalo ]0,1[ : ");
+            h = sc.nextDouble();
+        }
+        return h;
+    }
+
+    private static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {
+        if (num<=numMenor || num>numMaior) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private static int verificaNumeroDias(Scanner sc) {
+        int N = -1;
+        while (verificaMaiorZero(N)==false) {
+            System.out.print("Introduza o número de dias a considerar para análise: ");
+            N = sc.nextInt();
+        }
+        return N;
+    }
+
+    private static int verificaTamanhoPopulacao(Scanner sc) {
+        int N = -1;
+        while (verificaMaiorZero(N)==false) {
+            System.out.print("Introduza o tamanho da população: ");
+            N = sc.nextInt();
+        }
+        return N;
+    }
+
+
+    private static boolean verificaMaiorZero(int num) {
+        if (num<=0) {
+            return false;
+        }else {
+            return true;
+        }
     }
 
     private static int contarLinhasFicheiro(String nomeFicheiroIn) throws FileNotFoundException {

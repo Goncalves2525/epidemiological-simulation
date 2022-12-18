@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados">
+    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
@@ -116,7 +116,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671322704372</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome">
+      <created>1671329230980</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1671329230980</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -136,7 +143,8 @@
     <MESSAGE value="Menu de opções" />
     <MESSAGE value="merge com SC" />
     <MESSAGE value="Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados" />
+    <MESSAGE value="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome" />
+    <option name="LAST_COMMIT_MESSAGE" value="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -145,6 +153,11 @@
           <properties class="java.lang.NumberFormatException" package="java.lang" />
           <option name="timeStamp" value="2" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/Main.java</url>
+          <line>51</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
