@@ -1,0 +1,415 @@
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import java.io.File;\nimport java.io.FileNotFoundException;\nimport java.util.Scanner;\n\npublic class Main {\n\n    public static void main(String[] args) throws FileNotFoundException {\n        Scanner sc = new Scanner(System.in);\n\n        //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido\n        String nomeFicheiroIn = verificaFicheiro(sc);\n\n        //Pede e verifica intervalo de passo de integração\n        double h = verificaPassoIntegracao(sc);\n\n        //Pede e verifica tamanho da população\n        int N = verificaTamanhoPopulacao(sc);\n\n        //Pede e verifica numero de dias da análise\n        int dias = verificaNumeroDias(sc);\n\n        //Contar linhas ficheiro menos a primeira linha (neste caso é o título)\n        int numLinhas = contarLinhasFicheiro(nomeFicheiroIn)-1;\n\n        //Array dos nomes\n        String [] arrNomes = new String[numLinhas];\n        preencherNomes(arrNomes,nomeFicheiroIn);\n\n        //Array de Valores\n        double [][] arrValores = new double[numLinhas][4];\n        preencherValores(arrValores,nomeFicheiroIn);\n\n\n        mostrarMenuOpcoes(sc);\n\n    }\n\n\n\n    private static String verificaFicheiro(Scanner sc) throws FileNotFoundException {\n        String nomeFicheiroIn = \" \";\n        boolean nomeValido = false;\n        System.out.print(\"Escreva o nome do ficheiro de entrada de dados em formato .csv: \");\n\n        while (!nomeValido) {\n            nomeFicheiroIn = sc.next();\n            File importt = new File(nomeFicheiroIn);\n\n            if (importt.exists()) {\n                // o ficheiro existe, podemos abri-lo\n                // verificamos agora se não está vazio\n                Scanner impor = new Scanner (new File(nomeFicheiroIn));\n                if (impor.hasNextLine()) {\n                    nomeValido = true;\n                }else {\n                    System.out.print(\"O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: \");\n                }\n                    impor.close();\n            } else {\n                // o ficheiro não existe, pedimos de novo o nome do ficheiro\n                System.out.print(\"O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: \");\n            }\n        }\n        return nomeFicheiroIn;\n    }\n\n    private static double verificaPassoIntegracao(Scanner sc) {\n        double h = -1;\n        while (verificaIntervaloDoisNumeros(h,0,1)==false) {\n            System.out.print(\"Introduza o valor do passo do intervalo ]0,1[ : \");\n            h = sc.nextDouble();\n        }\n        return h;\n    }\n\n    private static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {\n        if (num<=numMenor || num>numMaior) {\n            return false;\n        } else {\n            return true;\n        }\n    }\n\n    private static int verificaNumeroDias(Scanner sc) {\n        int N = -1;\n        while (verificaMaiorZero(N)==false) {\n            System.out.print(\"Introduza o número de dias a considerar para análise: \");\n            N = sc.nextInt();\n        }\n        return N;\n    }\n\n    private static int verificaTamanhoPopulacao(Scanner sc) {\n        int N = -1;\n        while (verificaMaiorZero(N)==false) {\n            System.out.print(\"Introduza o tamanho da população: \");\n            N = sc.nextInt();\n        }\n        return N;\n    }\n\n\n    private static boolean verificaMaiorZero(int num) {\n        if (num<=0) {\n            return false;\n        }else {\n            return true;\n        }\n    }\n\n    private static int contarLinhasFicheiro(String nomeFicheiroIn) throws FileNotFoundException {\n        int cont = 0;\n        Scanner impor = new Scanner (new File(nomeFicheiroIn));\n        while (impor.hasNextLine()) {\n            impor.nextLine();\n            cont++;\n        }\n        impor.close();\n        return cont;\n    }\n\n    private static void preencherNomes(String [] arrNomes,String nomeFicheiroIn) throws FileNotFoundException {\n        Scanner impor = new Scanner (new File(nomeFicheiroIn));\n        impor.nextLine();\n        for (int i = 0; i < arrNomes.length; i++) {\n            String[] itensDaLinha = impor.nextLine().split(\";\");\n            arrNomes[i]=itensDaLinha[0];\n        }\n        impor.close();\n    }\n\n    private static void preencherValores(double [][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {\n        Scanner impor = new Scanner (new File(nomeFicheiroIn));\n        impor.nextLine();\n        for (int i = 0; i < arrValores.length; i++) {\n            String variavelApoio = impor.nextLine();\n            variavelApoio = variavelApoio.replace(',', '.');\n            String[] itensDaLinha = variavelApoio.split(\";\");\n            for (int j = 1; j < itensDaLinha.length; j++) {\n                arrValores[i][j-1]=Double.parseDouble(itensDaLinha[j]);\n            }\n        }\n        impor.close();\n    }\n\n\n    public static void mostrarMenuOpcoes(Scanner sc){\n\n        int[] arrayOpcoes = new int[] {1, 2, 3, 4};\n        boolean opcaoValida = false;\n        int opcao = 0;\n        do{\n            System.out.println(\"Bem vindo!\");\n            System.out.println(\"##################\");\n            System.out.println(\"(1) aaaa\");\n            System.out.println(\"(2) bbbb\");\n            System.out.println(\"(3) cccc\");\n            System.out.println(\"(4) dddd\");\n            System.out.println(\"##################\");\n            System.out.print(\"Por favor, selecione uma opção:\");\n\n            opcao = sc.nextInt();\n\n            switch (opcao) {\n                case 1:\n                    System.out.println(\"opçao1\");\n                    opcaoValida = true;\n                    break;\n                case 2:\n                    System.out.println(\"opçao2\");\n                    opcaoValida = true;\n                    break;\n                case 3:\n                    System.out.println(\"opçao3\");\n                    opcaoValida = true;\n                    break;\n                case 4:\n                    System.out.println(\"opçao4\");\n                    opcaoValida = true;\n                    break;\n                default:\n                    break;\n            }\n        }while (!opcaoValida);\n    }\n\n\n    public static double RK4(double x0, double y0, double n, double h){\n        double yn = 0;\n        double k = 0;\n        int i = 0;\n        double k1,k2,k3,k4;\n\n\n        for (i = 0; i < n; i ++){\n//            k1 = h * f(x0,y0);\n//            k2 = h * f(x0 + h/2, y0 + k1/2);\n//            k3 = h * f(x0 + h/2, y0 + k2/2);\n//            k4 = h * f(x0 + h,y0 + k3);\n//            k = (k1 + 2 * k2 + 2 * k3 + k4)/6;\n//            yn = y0 +k;\n//            x0 = x0 + h;\n//            y0 = yn;\n        }\n\n        return yn;\n    }\n\n    //−β.S.I\n    public static double derivadaSOrdemT(double beta, double s, double i){\n        return -beta * s * i;\n    }\n\n    //ρ.β.S.I − γ.I + α.R\n    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r ){\n        return ro * beta * s * i - gama * i + alfa * r;\n    }\n\n    //γ.I − α.R + (1 − ρ).β.S.I\n    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s){\n        return gama * i - alfa * r + (1 - ro) * beta * s * i;\n    }\n\n\n    public static double[][] euler(int dias, int n, double h, int N, double beta, double gama, double ro, double alfa){\n        //as 3 funções a retornar após o método\n        double[] funcoes = new double[3];\n\n        //As 3 funções\n        double sn = 0;\n        double in = 0;\n        double rn = 0;\n\n        //Valores iniciais das 3 funções\n        double s0 = N - 1;\n        double i0 = 1;\n        double r0 = 0;\n\n        //Precisamos de saber quantos passos tem um dia para podermos exportar devidamente para ficheiro csv\n        double passosNumDia = 1 / h;\n\n        double[][] matriz = new double[dias][3];\n\n        for (int i = 0; i < dias; i++) {\n            for (int j = 0; j < passosNumDia; j++) {\n                sn = s0 + 0.1 * derivadaSOrdemT(beta, s0, i0);\n                in = i0 + 0.1 * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);\n                rn = r0 + 0.1 * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);\n\n                s0 = sn;\n                i0 = in;\n                r0 = rn;\n            }\n            matriz[i][0] = sn;\n            matriz[i][1] = in;\n            matriz[i][2] = rn;\n\n\n        }\n\n        return matriz;\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Main.java b/src/Main.java
+--- a/src/Main.java	(revision 1afbce129a6e3b3210eaf11dfb2f916810f71beb)
++++ b/src/Main.java	(date 1671480789380)
+@@ -1,161 +1,74 @@
+-import java.io.File;
+-import java.io.FileNotFoundException;
++import java.util.Arrays;
+ import java.util.Scanner;
+ 
+ public class Main {
+ 
+-    public static void main(String[] args) throws FileNotFoundException {
++    public static void main(String[] args) {
+         Scanner sc = new Scanner(System.in);
+ 
+-        //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
+-        String nomeFicheiroIn = verificaFicheiro(sc);
+-
+-        //Pede e verifica intervalo de passo de integração
+-        double h = verificaPassoIntegracao(sc);
+-
+-        //Pede e verifica tamanho da população
+-        int N = verificaTamanhoPopulacao(sc);
+-
+-        //Pede e verifica numero de dias da análise
+-        int dias = verificaNumeroDias(sc);
+-
+-        //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
+-        int numLinhas = contarLinhasFicheiro(nomeFicheiroIn)-1;
+-
+-        //Array dos nomes
+-        String [] arrNomes = new String[numLinhas];
+-        preencherNomes(arrNomes,nomeFicheiroIn);
+-
+-        //Array de Valores
+-        double [][] arrValores = new double[numLinhas][4];
+-        preencherValores(arrValores,nomeFicheiroIn);
+-
+-
+-        mostrarMenuOpcoes(sc);
+-
+-    }
+-
+-
+-
+-    private static String verificaFicheiro(Scanner sc) throws FileNotFoundException {
+-        String nomeFicheiroIn = " ";
+-        boolean nomeValido = false;
+-        System.out.print("Escreva o nome do ficheiro de entrada de dados em formato .csv: ");
+-
+-        while (!nomeValido) {
+-            nomeFicheiroIn = sc.next();
+-            File importt = new File(nomeFicheiroIn);
+-
+-            if (importt.exists()) {
+-                // o ficheiro existe, podemos abri-lo
+-                // verificamos agora se não está vazio
+-                Scanner impor = new Scanner (new File(nomeFicheiroIn));
+-                if (impor.hasNextLine()) {
+-                    nomeValido = true;
+-                }else {
+-                    System.out.print("O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: ");
+-                }
+-                    impor.close();
+-            } else {
+-                // o ficheiro não existe, pedimos de novo o nome do ficheiro
+-                System.out.print("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
+-            }
++        if ((args.length == 0)) {
++            mostrarMenuOpcoes(sc);
++        } else {
++            lerArgumentosLinhaComandos(args);
+         }
+-        return nomeFicheiroIn;
+     }
+ 
+-    private static double verificaPassoIntegracao(Scanner sc) {
+-        double h = -1;
+-        while (verificaIntervaloDoisNumeros(h,0,1)==false) {
+-            System.out.print("Introduza o valor do passo do intervalo ]0,1[ : ");
+-            h = sc.nextDouble();
++    public static void lerArgumentosLinhaComandos(String[] argumentos) {
++        boolean inputValido = true;
++        String nomeFicheiroEntrada = "";
++        //-m X -p Y -t Z -d K ficheiroResultado.csv
++        double paramM = 0;  //método a usar
++        double paramP = 0;  //passo h
++        double paramT = 0;  // 0<x<1
++        double paramD = 0;  //num dias; d>0
++        double varn = 0;
++        String nomeFicheiroSaida = "";
++
++        nomeFicheiroEntrada = argumentos[0];
++        if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
++            inputValido = false;
+         }
+-        return h;
+-    }
+-
+-    private static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {
+-        if (num<=numMenor || num>numMaior) {
+-            return false;
++        paramM = Double.parseDouble(argumentos[2]);
++        if (paramM != 1 && paramM != 2) {
++            inputValido = false;
++        }
++        paramP = Double.parseDouble(argumentos[4]);
++        if (paramP < 0 || paramP > 1) {
++            inputValido = false;
++        }
++        paramT = Double.parseDouble(argumentos[6]);
++        if (paramT < 0) {
++            inputValido = false;
++        }
++        paramD = Double.parseDouble(argumentos[8]);
++        if (paramD < 0) {
++            inputValido = false;
++        }
++        nomeFicheiroSaida = argumentos[9];
++        if (nomeFicheiroSaida.indexOf(".csv") == -1) {
++            inputValido = false;
++        }
++        varn = paramT / paramP;
++        if (inputValido) {
++            for (int i = 0; i < paramD; i++) {
++                //correr métodos aqui
++            }
+         } else {
+-            return true;
++            System.out.println("parâmetros inválidos, volte a tentar!");
+         }
+     }
+-
+-    private static int verificaNumeroDias(Scanner sc) {
+-        int N = -1;
+-        while (verificaMaiorZero(N)==false) {
+-            System.out.print("Introduza o número de dias a considerar para análise: ");
+-            N = sc.nextInt();
+-        }
+-        return N;
+-    }
+-
+-    private static int verificaTamanhoPopulacao(Scanner sc) {
+-        int N = -1;
+-        while (verificaMaiorZero(N)==false) {
+-            System.out.print("Introduza o tamanho da população: ");
+-            N = sc.nextInt();
+-        }
+-        return N;
+-    }
+-
+-
+-    private static boolean verificaMaiorZero(int num) {
+-        if (num<=0) {
+-            return false;
+-        }else {
+-            return true;
+-        }
+-    }
+-
+-    private static int contarLinhasFicheiro(String nomeFicheiroIn) throws FileNotFoundException {
+-        int cont = 0;
+-        Scanner impor = new Scanner (new File(nomeFicheiroIn));
+-        while (impor.hasNextLine()) {
+-            impor.nextLine();
+-            cont++;
+-        }
+-        impor.close();
+-        return cont;
+-    }
+-
+-    private static void preencherNomes(String [] arrNomes,String nomeFicheiroIn) throws FileNotFoundException {
+-        Scanner impor = new Scanner (new File(nomeFicheiroIn));
+-        impor.nextLine();
+-        for (int i = 0; i < arrNomes.length; i++) {
+-            String[] itensDaLinha = impor.nextLine().split(";");
+-            arrNomes[i]=itensDaLinha[0];
+-        }
+-        impor.close();
+-    }
+-
+-    private static void preencherValores(double [][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {
+-        Scanner impor = new Scanner (new File(nomeFicheiroIn));
+-        impor.nextLine();
+-        for (int i = 0; i < arrValores.length; i++) {
+-            String variavelApoio = impor.nextLine();
+-            variavelApoio = variavelApoio.replace(',', '.');
+-            String[] itensDaLinha = variavelApoio.split(";");
+-            for (int j = 1; j < itensDaLinha.length; j++) {
+-                arrValores[i][j-1]=Double.parseDouble(itensDaLinha[j]);
+-            }
+-        }
+-        impor.close();
+-    }
+-
+ 
+-    public static void mostrarMenuOpcoes(Scanner sc){
+-
+-        int[] arrayOpcoes = new int[] {1, 2, 3, 4};
++    public static void mostrarMenuOpcoes(Scanner sc) {
++        double varn = 0;
+         boolean opcaoValida = false;
+         int opcao = 0;
+-        do{
++        do {
+             System.out.println("Bem vindo!");
+             System.out.println("##################");
+-            System.out.println("(1) aaaa");
+-            System.out.println("(2) bbbb");
+-            System.out.println("(3) cccc");
+-            System.out.println("(4) dddd");
++            System.out.println("(1) Método Euler");
++            System.out.println("(2) Método RK4");
++            System.out.println("(3) Métodos com .png no final");
++            System.out.println("(4) Métodos com .csv no final");
+             System.out.println("##################");
+             System.out.print("Por favor, selecione uma opção:");
+ 
+@@ -164,6 +77,7 @@
+             switch (opcao) {
+                 case 1:
+                     System.out.println("opçao1");
++
+                     opcaoValida = true;
+                     break;
+                 case 2:
+@@ -181,48 +95,101 @@
+                 default:
+                     break;
+             }
+-        }while (!opcaoValida);
++        } while (!opcaoValida);
+     }
+ 
+ 
+-    public static double RK4(double x0, double y0, double n, double h){
+-        double yn = 0;
+-        double k = 0;
++    public static double[][] RK4(double alfa, double beta, double gamma, double ro, int n, double h, double varNPop) {
++        double passosNumDia = 1 / h;
++
++        double[][] resultadoYn = new double[n][3];
++        double kS = 0;
++        double kI = 0;
++        double kR = 0;
+         int i = 0;
+-        double k1,k2,k3,k4;
++        double k1S = 0;
++        double k2S = 0;
++        double k3S = 0;
++        double k4S = 0;
++        double k1I = 0;
++        double k2I = 0;
++        double k3I = 0;
++        double k4I = 0;
++        double k1R = 0;
++        double k2R = 0;
++        double k3R = 0;
++        double k4R = 0;
++
++        double x0ParaS = 0;
++        double x0ParaI = 0;
++        double x0ParaR = 0;
+ 
++        double ynParaS = 0;
++        double ynParaI = 0;
++        double ynParaR = 0;
++
++        double y0ParaS = varNPop - 1;
++        double y0ParaI = 1;
++        double y0ParaR = 0;
+ 
+-        for (i = 0; i < n; i ++){
+-//            k1 = h * f(x0,y0);
+-//            k2 = h * f(x0 + h/2, y0 + k1/2);
+-//            k3 = h * f(x0 + h/2, y0 + k2/2);
+-//            k4 = h * f(x0 + h,y0 + k3);
+-//            k = (k1 + 2 * k2 + 2 * k3 + k4)/6;
+-//            yn = y0 +k;
+-//            x0 = x0 + h;
+-//            y0 = yn;
++        for (i = 0; i < n; i++) {
++            for (int j = 0; j < passosNumDia; j++) {
++                //k1 = h * f(x0,y0);
++                k1S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI);
++                k1I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
++                k1R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
++                //k2 = h * f(x0 + h/2, y0 + k1/2);
++                k2S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + (k1S / 2));
++                k2I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
++                k2R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
++                //k3 = h * f(x0 + h/2, y0 + k2/2);
++                k3S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + (k2S / 2));
++                k3I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
++                k3R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
++                //k4 = h * f(x0 + h,y0 + k3);
++                k4S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + k3S);
++                k4I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
++                k4R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
++
++                kS = (k1S + 2 * k2S + 2 * k3S + k4S) / 6;
++                kI = (k1I + 2 * k2I + 2 * k3I + k4I) / 6;
++                kR = (k1R + 2 * k2R + 2 * k3R + k4R) / 6;
++                ynParaS = y0ParaS + kS;
++                ynParaI = y0ParaI + kI;
++                ynParaR = y0ParaR + kR;
++                x0ParaS += h;
++                x0ParaI += h;
++                x0ParaR += h;
++                y0ParaS = ynParaS;
++                y0ParaI = ynParaI;
++                y0ParaR = ynParaR;
++
++            }
++            resultadoYn[i][0] = ynParaS;
++            resultadoYn[i][1] = ynParaI;
++            resultadoYn[i][2] = ynParaR;
+         }
+ 
+-        return yn;
++        return resultadoYn;
+     }
+ 
+     //−β.S.I
+-    public static double derivadaSOrdemT(double beta, double s, double i){
++    public static double derivadaSOrdemT(double beta, double s, double i) {
+         return -beta * s * i;
+     }
+ 
+     //ρ.β.S.I − γ.I + α.R
+-    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r ){
++    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r) {
+         return ro * beta * s * i - gama * i + alfa * r;
+     }
+ 
+     //γ.I − α.R + (1 − ρ).β.S.I
+-    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s){
++    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s) {
+         return gama * i - alfa * r + (1 - ro) * beta * s * i;
+     }
+ 
+ 
+-    public static double[][] euler(int dias, int n, double h, int N, double beta, double gama, double ro, double alfa){
++    public static double[] euler(int n, double h, int N, double beta, double gama, double ro, double alfa) {
+         //as 3 funções a retornar após o método
+         double[] funcoes = new double[3];
+ 
+@@ -236,28 +203,20 @@
+         double i0 = 1;
+         double r0 = 0;
+ 
+-        //Precisamos de saber quantos passos tem um dia para podermos exportar devidamente para ficheiro csv
+-        double passosNumDia = 1 / h;
+-
+-        double[][] matriz = new double[dias][3];
+-
+-        for (int i = 0; i < dias; i++) {
+-            for (int j = 0; j < passosNumDia; j++) {
+-                sn = s0 + 0.1 * derivadaSOrdemT(beta, s0, i0);
+-                in = i0 + 0.1 * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
+-                rn = r0 + 0.1 * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
++        for (int i = 0; i < n; i++) {
++            sn = s0 + h * derivadaSOrdemT(beta, s0, i0);
++            in = i0 + h * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
++            rn = r0 + h * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
+ 
+-                s0 = sn;
+-                i0 = in;
+-                r0 = rn;
+-            }
+-            matriz[i][0] = sn;
+-            matriz[i][1] = in;
+-            matriz[i][2] = rn;
++            s0 = sn;
++            i0 = in;
++            r0 = rn;
++        }
+ 
++        funcoes[0] = sn;
++        funcoes[1] = in;
++        funcoes[2] = rn;
+ 
+-        }
+-
+-        return matriz;
++        return funcoes;
+     }
+ }
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"34b39b2d-af57-40ce-834c-0c4723236d8f\" name=\"Changes\" comment=\"Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/Main.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Main.java\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"CodeStyleSettingsInfer\">\n    <option name=\"done\" value=\"true\" />\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"MarkdownSettingsMigration\">\n    <option name=\"stateVersion\" value=\"1\" />\n  </component>\n  <component name=\"ProjectCodeStyleSettingsMigration\">\n    <option name=\"version\" value=\"2\" />\n  </component>\n  <component name=\"ProjectId\" id=\"2IpeDJFBqeiHvLF07YUobkeZnp9\" />\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\">\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\n  </component>\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunManager\">\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"Main\" />\n      <module name=\"LAPR1_NAB_Grupo07\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Application.Main\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"34b39b2d-af57-40ce-834c-0c4723236d8f\" name=\"Changes\" comment=\"\" />\n      <created>1670882832723</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1670882832723</updated>\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"commit fix\">\n      <created>1670883049812</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1670883049812</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"commit fix\">\n      <created>1670883061468</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1670883061468</updated>\n    </task>\n    <task id=\"LOCAL-00003\" summary=\"commit fix\">\n      <created>1670883292593</created>\n      <option name=\"number\" value=\"00003\" />\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1670883292593</updated>\n    </task>\n    <task id=\"LOCAL-00004\" summary=\"commit fix\">\n      <created>1670883675756</created>\n      <option name=\"number\" value=\"00004\" />\n      <option name=\"presentableId\" value=\"LOCAL-00004\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1670883675756</updated>\n    </task>\n    <task id=\"LOCAL-00005\" summary=\"commit fix\">\n      <created>1670883695347</created>\n      <option name=\"number\" value=\"00005\" />\n      <option name=\"presentableId\" value=\"LOCAL-00005\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1670883695347</updated>\n    </task>\n    <task id=\"LOCAL-00006\" summary=\"Menu de opções\">\n      <created>1671136089432</created>\n      <option name=\"number\" value=\"00006\" />\n      <option name=\"presentableId\" value=\"LOCAL-00006\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1671136089432</updated>\n    </task>\n    <task id=\"LOCAL-00007\" summary=\"merge com SC\">\n      <created>1671140140230</created>\n      <option name=\"number\" value=\"00007\" />\n      <option name=\"presentableId\" value=\"LOCAL-00007\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1671140140230</updated>\n    </task>\n    <task id=\"LOCAL-00008\" summary=\"Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados\">\n      <created>1671322704372</created>\n      <option name=\"number\" value=\"00008\" />\n      <option name=\"presentableId\" value=\"LOCAL-00008\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1671322704372</updated>\n    </task>\n    <task id=\"LOCAL-00009\" summary=\"Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome\">\n      <created>1671329230980</created>\n      <option name=\"number\" value=\"00009\" />\n      <option name=\"presentableId\" value=\"LOCAL-00009\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1671329230980</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"10\" />\n    <servers />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\n    <MESSAGE value=\"commit fix\" />\n    <MESSAGE value=\"Menu de opções\" />\n    <MESSAGE value=\"merge com SC\" />\n    <MESSAGE value=\"Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados\" />\n    <MESSAGE value=\"Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome\" />\n  </component>\n  <component name=\"XDebuggerManager\">\n    <breakpoint-manager>\n      <breakpoints>\n        <breakpoint enabled=\"true\" type=\"java-exception\">\n          <properties class=\"java.lang.NumberFormatException\" package=\"java.lang\" />\n          <option name=\"timeStamp\" value=\"2\" />\n        </breakpoint>\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\n          <url>file://$PROJECT_DIR$/src/Main.java</url>\n          <line>51</line>\n          <option name=\"timeStamp\" value=\"9\" />\n        </line-breakpoint>\n      </breakpoints>\n    </breakpoint-manager>\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 1afbce129a6e3b3210eaf11dfb2f916810f71beb)
++++ b/.idea/workspace.xml	(date 1671480807167)
+@@ -155,7 +155,7 @@
+         </breakpoint>
+         <line-breakpoint enabled="true" type="java-line">
+           <url>file://$PROJECT_DIR$/src/Main.java</url>
+-          <line>51</line>
++          <line>12</line>
+           <option name="timeStamp" value="9" />
+         </line-breakpoint>
+       </breakpoints>
