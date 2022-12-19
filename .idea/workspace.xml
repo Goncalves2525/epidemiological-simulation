@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome">
+    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="O metodo de pedir o nome do ficheiro verifica se o nome existe e se esta vazio. Foram introduzidos metodos para verificar passos, tamanho de populaçao e numero de dias.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
@@ -123,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671329230980</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="O metodo de pedir o nome do ficheiro verifica se o nome existe e se esta vazio. Foram introduzidos metodos para verificar passos, tamanho de populaçao e numero de dias.">
+      <created>1671379849565</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1671379849565</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -144,7 +151,8 @@
     <MESSAGE value="merge com SC" />
     <MESSAGE value="Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados" />
     <MESSAGE value="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome" />
-    <option name="LAST_COMMIT_MESSAGE" value="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome" />
+    <MESSAGE value="O metodo de pedir o nome do ficheiro verifica se o nome existe e se esta vazio. Foram introduzidos metodos para verificar passos, tamanho de populaçao e numero de dias." />
+    <option name="LAST_COMMIT_MESSAGE" value="O metodo de pedir o nome do ficheiro verifica se o nome existe e se esta vazio. Foram introduzidos metodos para verificar passos, tamanho de populaçao e numero de dias." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -155,7 +163,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>51</line>
+          <line>52</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>
