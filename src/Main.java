@@ -345,9 +345,8 @@ public class Main {
     }
 
 
-    public static double[][] euler(int dias, double h, int N, double beta, double gama, double ro, double alfa) {
-        //as 3 funções a retornar após o método
-        double[] funcoes = new double[3];
+    public static double[][] euler(int dias, double passo, int populacao, double beta, double gama, double ro, double alfa) {
+
 
         //As 3 funções
         double sn = 0;
@@ -355,28 +354,34 @@ public class Main {
         double rn = 0;
 
         //Valores iniciais das 3 funções
-        double s0 = N - 1;
+        double s0 = populacao - 1;
         double i0 = 1;
         double r0 = 0;
 
         //Precisamos de saber quantos passos tem um dia para podermos exportar devidamente para ficheiro csv
-        double passosNumDia = 1 / h;
+        double passosNumDia = 1 / passo;
 
-        double[][] matriz = new double[dias][3];
+        //A matriz de valores a devolver
+        double[][] matriz = new double[dias][5];
 
+        //O método de Euler
         for (int i = 0; i < dias; i++) {
             for (int j = 0; j < passosNumDia; j++) {
-                sn = s0 + 0.1 * derivadaSOrdemT(beta, s0, i0);
-                in = i0 + 0.1 * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
-                rn = r0 + 0.1 * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
+                sn = s0 + passo * derivadaSOrdemT(beta, s0, i0);
+                in = i0 + passo * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
+                rn = r0 + passo * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
 
                 s0 = sn;
                 i0 = in;
                 r0 = rn;
+
+
             }
-            matriz[i][0] = sn;
-            matriz[i][1] = in;
-            matriz[i][2] = rn;
+            matriz[i][0] = i;
+            matriz[i][1] = sn;
+            matriz[i][2] = in;
+            matriz[i][3] = rn;
+            matriz[i][4] = sn + in + rn;
 
 
         }
