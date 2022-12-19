@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Main {
@@ -261,4 +262,13 @@ public class Main {
 
         return matriz;
     }
+    private static void imprimirCSV(String fileName, double [][] matriz) throws FileNotFoundException {
+        PrintWriter out = new PrintWriter(fileName + ".csv");
+        out.println("dias"+";"+"S"+";"+"I"+";"+"R"+";"+"N");
+        for (int i = 0; i < matriz.length; i++) {
+            out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2]+ ";" + matriz[i][3]+ ";" + matriz[i][4]);
+        }
+        out.close();
+    }
+
 }
