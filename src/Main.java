@@ -247,8 +247,14 @@ public class Main {
         imprimirImagem(arrayResultado);
     }
 
-    public static void escreverParaCsv(double[][] arrayValores){
-
+    public static void escreverParaCsv(double[][] matriz) throws FileNotFoundException {
+        String fileName = "Título";
+        PrintWriter out = new PrintWriter(fileName + ".csv");
+        out.println("dias"+";"+"S"+";"+"I"+";"+"R"+";"+"N");
+        for (int i = 0; i < matriz.length; i++) {
+            out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2]+ ";" + matriz[i][3]+ ";" + matriz[i][4]);
+        }
+        out.close();
     }
 
     public static void imprimirImagem(double [][] arrayValores){
@@ -388,13 +394,6 @@ public class Main {
 
         return matriz;
     }
-    private static void imprimirCSV(String fileName, double [][] matriz) throws FileNotFoundException {
-        PrintWriter out = new PrintWriter(fileName + ".csv");
-        out.println("dias"+";"+"S"+";"+"I"+";"+"R"+";"+"N");
-        for (int i = 0; i < matriz.length; i++) {
-            out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2]+ ";" + matriz[i][3]+ ";" + matriz[i][4]);
-        }
-        out.close();
-    }
+
 
 }
