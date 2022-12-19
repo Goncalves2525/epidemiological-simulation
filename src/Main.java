@@ -8,35 +8,57 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner sc = new Scanner(System.in);
 
-        //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
-        String nomeFicheiroIn = verificaFicheiro(sc);
-
-        //Pede e verifica intervalo de passo de integração
-        double h = verificaPassoIntegracao(sc);
-
-        //Pede e verifica tamanho da população
-        int N = verificaTamanhoPopulacao(sc);
-
-        //Pede e verifica numero de dias da análise
-        int dias = verificaNumeroDias(sc);
-
-        //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
-        int numLinhas = contarLinhasFicheiro(nomeFicheiroIn)-1;
-
-        //Array dos nomes
-        String [] arrNomes = new String[numLinhas];
-        preencherNomes(arrNomes,nomeFicheiroIn);
-
-        //Array de Valores
-        double [][] arrValores = new double[numLinhas][4];
-        preencherValores(arrValores,nomeFicheiroIn);
-
-
-        mostrarMenuOpcoes(sc);
-
+        if ((args.length == 0)) {
+            mostrarMenuOpcoes(sc);
+        } else {
+            lerArgumentosLinhaComandos(args);
+        }
     }
 
+    public static void lerArgumentosLinhaComandos(String[] argumentos) {
+        boolean inputValido = true;
+        String nomeFicheiroEntrada = "";
+        //-m X -p Y -t Z -d K ficheiroResultado.csv
+        double paramM = 0;  //método a usar
+        double paramP = 0;  //passo h
+        double paramT = 0;  // 0<x<1
+        double paramD = 0;  //num dias; d>0
+        double varn = 0;
+        String nomeFicheiroSaida = "";
 
+        nomeFicheiroEntrada = argumentos[0];
+        if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
+            inputValido = false;
+        }
+        paramM = Double.parseDouble(argumentos[2]);
+        if (paramM != 1 && paramM != 2) {
+            inputValido = false;
+        }
+        paramP = Double.parseDouble(argumentos[4]);
+        if (paramP < 0 || paramP > 1) {
+            inputValido = false;
+        }
+        paramT = Double.parseDouble(argumentos[6]);
+        if (paramT < 0) {
+            inputValido = false;
+        }
+        paramD = Double.parseDouble(argumentos[8]);
+        if (paramD < 0) {
+            inputValido = false;
+        }
+        nomeFicheiroSaida = argumentos[9];
+        if (nomeFicheiroSaida.indexOf(".csv") == -1) {
+            inputValido = false;
+        }
+        varn = paramT / paramP;
+        if (inputValido) {
+            for (int i = 0; i < paramD; i++) {
+                //correr métodos aqui
+            }
+        } else {
+            System.out.println("parâmetros inválidos, volte a tentar!");
+        }
+    }
 
     private static String verificaFicheiro(Scanner sc) throws FileNotFoundException {
         String nomeFicheiroIn = " ";
@@ -50,13 +72,13 @@ public class Main {
             if (importt.exists()) {
                 // o ficheiro existe, podemos abri-lo
                 // verificamos agora se não está vazio
-                Scanner impor = new Scanner (new File(nomeFicheiroIn));
+                Scanner impor = new Scanner(new File(nomeFicheiroIn));
                 if (impor.hasNextLine()) {
                     nomeValido = true;
-                }else {
+                } else {
                     System.out.print("O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: ");
                 }
-                    impor.close();
+                impor.close();
             } else {
                 // o ficheiro não existe, pedimos de novo o nome do ficheiro
                 System.out.print("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
@@ -67,7 +89,7 @@ public class Main {
 
     private static double verificaPassoIntegracao(Scanner sc) {
         double h = -1;
-        while (verificaIntervaloDoisNumeros(h,0,1)==false) {
+        while (verificaIntervaloDoisNumeros(h, 0, 1) == false) {
             System.out.print("Introduza o valor do passo do intervalo ]0,1[ : ");
             h = sc.nextDouble();
         }
@@ -75,7 +97,7 @@ public class Main {
     }
 
     private static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {
-        if (num<=numMenor || num>numMaior) {
+        if (num <= numMenor || num > numMaior) {
             return false;
         } else {
             return true;
@@ -84,7 +106,7 @@ public class Main {
 
     private static int verificaNumeroDias(Scanner sc) {
         int N = -1;
-        while (verificaMaiorZero(N)==false) {
+        while (verificaMaiorZero(N) == false) {
             System.out.print("Introduza o número de dias a considerar para análise: ");
             N = sc.nextInt();
         }
@@ -93,7 +115,7 @@ public class Main {
 
     private static int verificaTamanhoPopulacao(Scanner sc) {
         int N = -1;
-        while (verificaMaiorZero(N)==false) {
+        while (verificaMaiorZero(N) == false) {
             System.out.print("Introduza o tamanho da população: ");
             N = sc.nextInt();
         }
@@ -102,16 +124,16 @@ public class Main {
 
 
     private static boolean verificaMaiorZero(int num) {
-        if (num<=0) {
+        if (num <= 0) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
 
     private static int contarLinhasFicheiro(String nomeFicheiroIn) throws FileNotFoundException {
         int cont = 0;
-        Scanner impor = new Scanner (new File(nomeFicheiroIn));
+        Scanner impor = new Scanner(new File(nomeFicheiroIn));
         while (impor.hasNextLine()) {
             impor.nextLine();
             cont++;
@@ -120,43 +142,40 @@ public class Main {
         return cont;
     }
 
-    private static void preencherNomes(String [] arrNomes,String nomeFicheiroIn) throws FileNotFoundException {
-        Scanner impor = new Scanner (new File(nomeFicheiroIn));
+    private static void preencherNomes(String[] arrNomes, String nomeFicheiroIn) throws FileNotFoundException {
+        Scanner impor = new Scanner(new File(nomeFicheiroIn));
         impor.nextLine();
         for (int i = 0; i < arrNomes.length; i++) {
             String[] itensDaLinha = impor.nextLine().split(";");
-            arrNomes[i]=itensDaLinha[0];
+            arrNomes[i] = itensDaLinha[0];
         }
         impor.close();
     }
 
-    private static void preencherValores(double [][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {
-        Scanner impor = new Scanner (new File(nomeFicheiroIn));
+    private static void preencherValores(double[][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {
+        Scanner impor = new Scanner(new File(nomeFicheiroIn));
         impor.nextLine();
         for (int i = 0; i < arrValores.length; i++) {
             String variavelApoio = impor.nextLine();
             variavelApoio = variavelApoio.replace(',', '.');
             String[] itensDaLinha = variavelApoio.split(";");
             for (int j = 1; j < itensDaLinha.length; j++) {
-                arrValores[i][j-1]=Double.parseDouble(itensDaLinha[j]);
+                arrValores[i][j - 1] = Double.parseDouble(itensDaLinha[j]);
             }
         }
         impor.close();
     }
 
 
-    public static void mostrarMenuOpcoes(Scanner sc){
-
-        int[] arrayOpcoes = new int[] {1, 2, 3, 4};
+    public static void mostrarMenuOpcoes(Scanner sc) throws FileNotFoundException {
+        double varn = 0;
         boolean opcaoValida = false;
         int opcao = 0;
-        do{
+        do {
             System.out.println("Bem vindo!");
             System.out.println("##################");
-            System.out.println("(1) aaaa");
-            System.out.println("(2) bbbb");
-            System.out.println("(3) cccc");
-            System.out.println("(4) dddd");
+            System.out.println("(1) Método Euler");
+            System.out.println("(2) Método RK4");
             System.out.println("##################");
             System.out.print("Por favor, selecione uma opção:");
 
@@ -165,65 +184,167 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("opçao1");
+                    lerValoresParaIniciarMetodos(sc,opcao);
                     opcaoValida = true;
                     break;
                 case 2:
                     System.out.println("opçao2");
-                    opcaoValida = true;
-                    break;
-                case 3:
-                    System.out.println("opçao3");
-                    opcaoValida = true;
-                    break;
-                case 4:
-                    System.out.println("opçao4");
+                    lerValoresParaIniciarMetodos(sc,opcao);
                     opcaoValida = true;
                     break;
                 default:
                     break;
             }
-        }while (!opcaoValida);
+        } while (!opcaoValida);
     }
 
+    public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao) throws FileNotFoundException {
+        //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
+        String nomeFicheiroIn = verificaFicheiro(sc);
 
-    public static double RK4(double x0, double y0, double n, double h){
-        double yn = 0;
-        double k = 0;
-        int i = 0;
-        double k1,k2,k3,k4;
+        //Pede e verifica intervalo de passo de integração
+        double h = verificaPassoIntegracao(sc);
 
+        //Pede e verifica tamanho da população
+        int N = verificaTamanhoPopulacao(sc);
 
-        for (i = 0; i < n; i ++){
-//            k1 = h * f(x0,y0);
-//            k2 = h * f(x0 + h/2, y0 + k1/2);
-//            k3 = h * f(x0 + h/2, y0 + k2/2);
-//            k4 = h * f(x0 + h,y0 + k3);
-//            k = (k1 + 2 * k2 + 2 * k3 + k4)/6;
-//            yn = y0 +k;
-//            x0 = x0 + h;
-//            y0 = yn;
+        //Pede e verifica numero de dias da análise
+        int dias = verificaNumeroDias(sc);
+
+        //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
+        int numLinhas = contarLinhasFicheiro(nomeFicheiroIn) - 1;
+
+        double numPassos = dias/h;
+        //Array dos nomes
+        String[] arrNomes = new String[numLinhas];
+        preencherNomes(arrNomes, nomeFicheiroIn);
+
+        //Array de Valores
+        double[][] arrValores = new double[numLinhas][4];
+        preencherValores(arrValores, nomeFicheiroIn);
+
+        System.out.println("Que pessoa pretende analisar?");
+        for (int i = 0; i < arrNomes.length; i++) {
+            System.out.println(i + 1 + " - " + arrNomes[i]);
+        }
+        int opcaoSelecionada = sc.nextInt() - 1;
+
+        double beta = arrValores[opcaoSelecionada][0];
+        double gama = arrValores[opcaoSelecionada][1];
+        double ro = arrValores[opcaoSelecionada][2];
+        double alfa = arrValores[opcaoSelecionada][3];
+
+        double [][] arrayResultado = new double[0][0];
+        if(opcao == 1){
+            arrayResultado = euler(dias,h,N,beta,gama,ro,alfa);
+        }
+        else if(opcao == 2){
+            arrayResultado = RK4(alfa,beta,gama,ro,dias,h,N);
         }
 
-        return yn;
+        escreverParaCsv(arrayResultado);
+        imprimirImagem(arrayResultado);
+    }
+
+    public static void escreverParaCsv(double[][] arrayValores){
+
+    }
+
+    public static void imprimirImagem(double [][] arrayValores){
+
+    }
+
+    public static double[][] RK4(double alfa, double beta, double gamma, double ro, int dias, double h, double varNPop) {
+        double passosNumDia = 1 / h;
+
+        double[][] resultadoYn = new double[dias][3];
+        double kS = 0;
+        double kI = 0;
+        double kR = 0;
+        int i = 0;
+        double k1S = 0;
+        double k2S = 0;
+        double k3S = 0;
+        double k4S = 0;
+        double k1I = 0;
+        double k2I = 0;
+        double k3I = 0;
+        double k4I = 0;
+        double k1R = 0;
+        double k2R = 0;
+        double k3R = 0;
+        double k4R = 0;
+
+        double x0ParaS = 0;
+        double x0ParaI = 0;
+        double x0ParaR = 0;
+
+        double ynParaS = 0;
+        double ynParaI = 0;
+        double ynParaR = 0;
+
+        double y0ParaS = varNPop - 1;
+        double y0ParaI = 1;
+        double y0ParaR = 0;
+
+        for (i = 0; i < dias; i++) {
+            for (int j = 0; j < passosNumDia; j++) {
+                //k1 = h * f(x0,y0);
+                k1S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI);
+                k1I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
+                k1R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
+                //k2 = h * f(x0 + h/2, y0 + k1/2);
+                k2S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + (k1S / 2));
+                k2I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
+                k2R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
+                //k3 = h * f(x0 + h/2, y0 + k2/2);
+                k3S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + (k2S / 2));
+                k3I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
+                k3R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
+                //k4 = h * f(x0 + h,y0 + k3);
+                k4S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + k3S);
+                k4I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
+                k4R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
+
+                kS = (k1S + 2 * k2S + 2 * k3S + k4S) / 6;
+                kI = (k1I + 2 * k2I + 2 * k3I + k4I) / 6;
+                kR = (k1R + 2 * k2R + 2 * k3R + k4R) / 6;
+                ynParaS = y0ParaS + kS;
+                ynParaI = y0ParaI + kI;
+                ynParaR = y0ParaR + kR;
+                x0ParaS += h;
+                x0ParaI += h;
+                x0ParaR += h;
+                y0ParaS = ynParaS;
+                y0ParaI = ynParaI;
+                y0ParaR = ynParaR;
+
+            }
+            resultadoYn[i][0] = ynParaS;
+            resultadoYn[i][1] = ynParaI;
+            resultadoYn[i][2] = ynParaR;
+        }
+
+        return resultadoYn;
     }
 
     //−β.S.I
-    public static double derivadaSOrdemT(double beta, double s, double i){
+    public static double derivadaSOrdemT(double beta, double s, double i) {
         return -beta * s * i;
     }
 
     //ρ.β.S.I − γ.I + α.R
-    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r ){
+    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r) {
         return ro * beta * s * i - gama * i + alfa * r;
     }
 
     //γ.I − α.R + (1 − ρ).β.S.I
-    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s){
+    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s) {
         return gama * i - alfa * r + (1 - ro) * beta * s * i;
     }
 
 
-    public static double[][] euler(int dias, int n, double h, int N, double beta, double gama, double ro, double alfa){
+    public static double[][] euler(int dias, double h, int N, double beta, double gama, double ro, double alfa) {
         //as 3 funções a retornar após o método
         double[] funcoes = new double[3];
 
