@@ -8,15 +8,15 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-        //Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        //if ((args.length == 0)) {
-        //    mostrarMenuOpcoes(sc);
-        //} else {
-          //  lerArgumentosLinhaComandos(args);
-       // }
-        criarScriptGnu("ruca","euler",30,"Ruca",1000);
-        imprimirImagem("ruca");
+        if ((args.length == 0)) {
+            mostrarMenuOpcoes(sc);
+        } else {
+            lerArgumentosLinhaComandos(args);
+        }
+//        criarScriptGnu("ruca","euler",5,"Ruca",100,true);
+//        imprimirImagem("ruca",true);
     }
 
     public static void lerArgumentosLinhaComandos(String[] argumentos) {
@@ -56,9 +56,8 @@ public class Main {
         }
         varn = paramT / paramP;
         if (inputValido) {
-            for (int i = 0; i < paramD; i++) {
-                //correr métodos aqui
-            }
+
+
         } else {
             System.out.println("parâmetros inválidos, volte a tentar!");
         }
@@ -101,7 +100,7 @@ public class Main {
     }
 
     private static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {
-        if (num <= numMenor || num > numMaior) {
+        if (num <= numMenor || num >= numMaior) {
             return false;
         } else {
             return true;
@@ -261,13 +260,22 @@ public class Main {
         out.close();
     }
 
-    public static void imprimirImagem(String fileName) throws IOException {
+    public static void imprimirImagem(String fileName, boolean interativo) throws IOException {
         Runtime rt = Runtime.getRuntime();
-        rt.exec("gnuplot -p "+fileName+".gp");
+        if(interativo){
+            rt.exec("gnuplot -p "+fileName+".gp");
+        }
+       else{
+            rt.exec("gnuplot "+fileName+".gp");
+        }
     }
-    public static void criarScriptGnu(String nome, String metodo, int numDias, String filename, int populacao) throws FileNotFoundException {
+    public static void criarScriptGnu(String nome, String metodo, int numDias, String filename, int populacao, boolean interativo) throws FileNotFoundException {
         PrintWriter out = new PrintWriter(nome + ".gp");
-        out.println("set output '"+nome+".png'\n" +
+        if(!interativo){
+            out.println("set terminal png size 640,480 \n");
+        }
+        out.println(
+                "set output '"+nome+".png'\n" +
                 "set title 'Distribuicao da falsa noticia("+metodo+")'\n" +
                 "set xlabel 'Numero dias'\n" +
                 "set ylabel 'Populacao'\n" +
