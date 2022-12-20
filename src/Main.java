@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
@@ -244,7 +245,8 @@ public class Main {
         }
 
         escreverParaCsv(arrayResultado);
-        imprimirImagem(arrayResultado);
+        //teráque entrar o nome do ficheiro que sai do "escreverParaCsv
+        imprimirImagem();
     }
 
     public static void escreverParaCsv(double[][] matriz) throws FileNotFoundException {
@@ -257,8 +259,22 @@ public class Main {
         out.close();
     }
 
-    public static void imprimirImagem(double [][] arrayValores){
-
+    public static void imprimirImagem((String fileName) throws IOException {
+        Runtime rt = Runtime.getRuntime();
+        rt.exec("gnuplot -p "+fileName+".gp");
+    }
+    public static void criarScriptGnu(String nome, String metodo, int numDias, String filename, int populacao) throws FileNotFoundException {
+        PrintWriter out = new PrintWriter(nome + ".gp");
+        out.println("set output '"+nome+".png'\n" +
+                "set title 'Distribuicao da falsa noticia("+metodo+")'\n" +
+                "set xlabel 'Numero dias'\n" +
+                "set ylabel 'Populacao'\n" +
+                "set xrange [1:"+numDias+"]\n" +
+                "set yrange [1:"+populacao+"]\n" +
+                "set grid\n" +
+                "set datafile separator \";\"\n" +
+                "plot for [col=2:4] '"+filename+".csv' using 0:col with lines title columnheader");
+        out.close();
     }
 
     public static double[][] RK4(double alfa, double beta, double gamma, double ro, int dias, double h, double varNPop) {
