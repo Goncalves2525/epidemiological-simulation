@@ -7,14 +7,16 @@ import java.util.Scanner;
 public class Main {
 
 
-    public static void main(String[] args) throws FileNotFoundException {
-        Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        //Scanner sc = new Scanner(System.in);
 
-        if ((args.length == 0)) {
-            mostrarMenuOpcoes(sc);
-        } else {
-            lerArgumentosLinhaComandos(args);
-        }
+        //if ((args.length == 0)) {
+        //    mostrarMenuOpcoes(sc);
+        //} else {
+          //  lerArgumentosLinhaComandos(args);
+       // }
+        criarScriptGnu("ruca","euler",30,"Ruca",1000);
+        imprimirImagem("ruca");
     }
 
     public static void lerArgumentosLinhaComandos(String[] argumentos) {
@@ -246,7 +248,7 @@ public class Main {
 
         escreverParaCsv(arrayResultado);
         //teráque entrar o nome do ficheiro que sai do "escreverParaCsv
-        imprimirImagem();
+        //imprimirImagem();
     }
 
     public static void escreverParaCsv(double[][] matriz) throws FileNotFoundException {
@@ -259,7 +261,7 @@ public class Main {
         out.close();
     }
 
-    public static void imprimirImagem((String fileName) throws IOException {
+    public static void imprimirImagem(String fileName) throws IOException {
         Runtime rt = Runtime.getRuntime();
         rt.exec("gnuplot -p "+fileName+".gp");
     }
