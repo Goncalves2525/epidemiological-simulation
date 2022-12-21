@@ -170,7 +170,7 @@ public class Main {
     }
 
 
-    public static void mostrarMenuOpcoes(Scanner sc) throws FileNotFoundException {
+    public static void mostrarMenuOpcoes(Scanner sc) throws IOException {
         double varn = 0;
         boolean opcaoValida = false;
         int opcao = 0;
@@ -186,12 +186,12 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    System.out.println("opçao1");
+                    System.out.println("Método Euler");
                     lerValoresParaIniciarMetodos(sc,opcao);
                     opcaoValida = true;
                     break;
                 case 2:
-                    System.out.println("opçao2");
+                    System.out.println("Método RK4");
                     lerValoresParaIniciarMetodos(sc,opcao);
                     opcaoValida = true;
                     break;
@@ -201,7 +201,7 @@ public class Main {
         } while (!opcaoValida);
     }
 
-    public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao) throws FileNotFoundException {
+    public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao) throws IOException {
         //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
         String nomeFicheiroIn = verificaFicheiro(sc);
 
@@ -226,10 +226,16 @@ public class Main {
         double[][] arrValores = new double[numLinhas][4];
         preencherValores(arrValores, nomeFicheiroIn);
 
-        System.out.println("Que pessoa pretende analisar?");
+        System.out.println("Lista de opções a escolher:");
+
+        int escolha = 0;
         for (int i = 0; i < arrNomes.length; i++) {
-            System.out.println(i + 1 + " - " + arrNomes[i]);
+            escolha = i +1;
+            System.out.println("(" + escolha + ")" + " - " + arrNomes[i]);
         }
+        escolha++;
+        System.out.println("(" + escolha + ")" + "-" + "Escolher todas as opções");
+        System.out.print("Que pessoa pretende analisar? ");
         int opcaoSelecionada = sc.nextInt() - 1;
 
         double beta = arrValores[opcaoSelecionada][0];
@@ -246,8 +252,10 @@ public class Main {
         }
 
         escreverParaCsv(arrayResultado);
-        //teráque entrar o nome do ficheiro que sai do "escreverParaCsv
-        //imprimirImagem();
+
+        criarScriptGnu("ruca",opcao,);
+        //terá que entrar o nome do ficheiro que sai do "escreverParaCsv
+        imprimirImagem("resultado.csv",true);
     }
 
     public static void escreverParaCsv(double[][] matriz) throws FileNotFoundException {
