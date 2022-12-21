@@ -17,14 +17,14 @@ public class Main {
         }
     }
 
-    public static void lerArgumentosLinhaComandos(String[] argumentos) throws FileNotFoundException {
+    public static void lerArgumentosLinhaComandos(String[] argumentos) throws IOException {
         boolean inputValido = true;
         String nomeFicheiroEntrada = "";
         //-m X -p Y -t Z -d K ficheiroResultado.csv
-        double paramM = 0;  //método a usar
-        double paramP = 0;  //passo h
-        double paramT = 0;  // 0<x<1
-        double paramD = 0;  //num dias; d>0
+        int paramM = 0;  //método a usar
+        double paramP = 0;  //passo h 0<x<1
+        int paramT = 0;  // populacao >0
+        int paramD = 0;  //num dias; d>0
         double varn = 0;
         String nomeFicheiroSaida = "";
 
@@ -32,7 +32,7 @@ public class Main {
         if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
             inputValido = false;
         }
-        paramM = Double.parseDouble(argumentos[2]);
+        paramM = Integer.parseInt(argumentos[2]);
         if (paramM != 1 && paramM != 2) {
             inputValido = false;
         }
@@ -40,11 +40,11 @@ public class Main {
         if (paramP < 0 || paramP > 1) {
             inputValido = false;
         }
-        paramT = Double.parseDouble(argumentos[6]);
+        paramT = Integer.parseInt(argumentos[6]);
         if (paramT < 0) {
             inputValido = false;
         }
-        paramD = Double.parseDouble(argumentos[8]);
+        paramD = Integer.parseInt(argumentos[8]);
         if (paramD < 0) {
             inputValido = false;
         }
@@ -53,13 +53,35 @@ public class Main {
             inputValido = false;
         }
         varn = paramT / paramP;
+
         if (inputValido) {
             int numLinhas = contarLinhasFicheiro(nomeFicheiroEntrada) - 1;
             String[] arrNomesFicheiro = new String[numLinhas];
             preencherNomes(arrNomesFicheiro, nomeFicheiroEntrada);
+            //Array de Valores
+            double[][] arrValores = new double[numLinhas][4];
+            preencherValores(arrValores, nomeFicheiroEntrada);
 
+            double beta = 0;
+            double gama = 0;
+            double ro = 0;
+            double alfa = 0;
             for (int i = 0; i < arrNomesFicheiro.length; i++) {
-                //to do: validar que
+                beta = arrValores[i][0];
+                gama = arrValores[i][1];
+                ro = arrValores[i][2];
+                alfa = arrValores[i][3];
+                double[][] arrayResultado = new double[0][0];
+                if (paramM == 1) {
+                    arrayResultado = euler(paramD, paramP, paramT, beta, gama, ro, alfa);
+                } else if (paramM == 2) {
+                    arrayResultado = RK4(alfa, beta, gama, ro, paramD, paramP, paramT);
+                }
+
+                String nomeFicheiro = "m" + paramM + "p" + String.format("%.0f", paramP) + "t" + paramT + "d" + paramD;
+                escreverParaCsv(arrayResultado, arrNomesFicheiro[i]+nomeFicheiro);
+                criarScriptGnu(arrNomesFicheiro[i]+ nomeFicheiro, paramM, paramD, arrNomesFicheiro[i] + nomeFicheiro, paramT, false);
+                imprimirImagem(arrNomesFicheiro[i]+ nomeFicheiro, false);
             }
 
         } else {
@@ -246,6 +268,7 @@ public class Main {
         double gama = 0;
         double ro = 0;
         double alfa = 0;
+        String nomeFicheiro = "m" + opcao + "p" + String.format("%.0f", h) + "t" + N + "d" + dias;
         //se a opção selecionada for igual ao maior número das opções, é porque o user pediu para analisar todos as pessoas
         if (opcaoSelecionada == escolha - 1) {
             for (int i = 0; i < arrNomes.length; i++) {
@@ -260,9 +283,9 @@ public class Main {
                     arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
                 }
 
-                escreverParaCsv(arrayResultado, arrNomes[i]);
-                criarScriptGnu(arrNomes[i], opcao, dias, arrNomes[i], N, interativo);
-                imprimirImagem(arrNomes[i], interativo);
+                escreverParaCsv(arrayResultado, arrNomes[i] + nomeFicheiro);
+                criarScriptGnu(arrNomes[i]+ nomeFicheiro, opcao, dias, arrNomes[i] + nomeFicheiro, N, interativo);
+                imprimirImagem(arrNomes[i]+ nomeFicheiro, interativo);
             }
         }
         else {
@@ -277,9 +300,9 @@ public class Main {
                 arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
             }
 
-            escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada]);
-            criarScriptGnu(arrNomes[opcaoSelecionada], opcao, dias, arrNomes[opcaoSelecionada], N, interativo);
-            imprimirImagem(arrNomes[opcaoSelecionada], interativo);
+            escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada] + nomeFicheiro);
+            criarScriptGnu(arrNomes[opcaoSelecionada]+ nomeFicheiro, opcao, dias, arrNomes[opcaoSelecionada] + nomeFicheiro, N, interativo);
+            imprimirImagem(arrNomes[opcaoSelecionada]+ nomeFicheiro, interativo);
         }
     }
 
