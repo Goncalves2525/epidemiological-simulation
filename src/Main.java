@@ -15,11 +15,9 @@ public class Main {
         } else {
             lerArgumentosLinhaComandos(args);
         }
-//        criarScriptGnu("ruca","euler",5,"Ruca",100,true);
-//        imprimirImagem("ruca",true);
     }
 
-    public static void lerArgumentosLinhaComandos(String[] argumentos) {
+    public static void lerArgumentosLinhaComandos(String[] argumentos) throws FileNotFoundException {
         boolean inputValido = true;
         String nomeFicheiroEntrada = "";
         //-m X -p Y -t Z -d K ficheiroResultado.csv
@@ -56,7 +54,13 @@ public class Main {
         }
         varn = paramT / paramP;
         if (inputValido) {
+            int numLinhas = contarLinhasFicheiro(nomeFicheiroEntrada) - 1;
+            String[] arrNomesFicheiro = new String[numLinhas];
+            preencherNomes(arrNomesFicheiro, nomeFicheiroEntrada);
 
+            for (int i = 0; i < arrNomesFicheiro.length; i++) {
+                //to do: validar que
+            }
 
         } else {
             System.out.println("parâmetros inválidos, volte a tentar!");
@@ -187,12 +191,12 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("Método Euler");
-                    lerValoresParaIniciarMetodos(sc, opcao);
+                    lerValoresParaIniciarMetodos(sc, opcao, true);
                     opcaoValida = true;
                     break;
                 case 2:
                     System.out.println("Método RK4");
-                    lerValoresParaIniciarMetodos(sc, opcao);
+                    lerValoresParaIniciarMetodos(sc, opcao, true);
                     opcaoValida = true;
                     break;
                 default:
@@ -201,7 +205,7 @@ public class Main {
         } while (!opcaoValida);
     }
 
-    public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao) throws IOException {
+    public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao, boolean interativo) throws IOException {
         //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
         String nomeFicheiroIn = verificaFicheiro(sc);
 
@@ -238,35 +242,49 @@ public class Main {
         System.out.print("Que pessoa pretende analisar? ");
         int opcaoSelecionada = sc.nextInt() - 1;
 
-        //se a opção selecionada for igual ao maior número das opções, é porque o user pediu para analisar todos as pessoas
-        if (opcaoSelecionada == escolha) {
-
-        }
         double beta = 0;
         double gama = 0;
         double ro = 0;
         double alfa = 0;
+        //se a opção selecionada for igual ao maior número das opções, é porque o user pediu para analisar todos as pessoas
+        if (opcaoSelecionada == escolha - 1) {
+            for (int i = 0; i < arrNomes.length; i++) {
+                beta = arrValores[i][0];
+                gama = arrValores[i][1];
+                ro = arrValores[i][2];
+                alfa = arrValores[i][3];
+                double[][] arrayResultado = new double[0][0];
+                if (opcao == 1) {
+                    arrayResultado = euler(dias, h, N, beta, gama, ro, alfa);
+                } else if (opcao == 2) {
+                    arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
+                }
 
-        beta = arrValores[opcaoSelecionada][0];
-        gama = arrValores[opcaoSelecionada][1];
-        ro = arrValores[opcaoSelecionada][2];
-        alfa = arrValores[opcaoSelecionada][3];
-
-        double[][] arrayResultado = new double[0][0];
-        if (opcao == 1) {
-            arrayResultado = euler(dias, h, N, beta, gama, ro, alfa);
-        } else if (opcao == 2) {
-            arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
+                escreverParaCsv(arrayResultado, arrNomes[i]);
+                criarScriptGnu(arrNomes[i], opcao, dias, arrNomes[i], N, interativo);
+                imprimirImagem(arrNomes[i], interativo);
+            }
         }
+        else {
+            beta = arrValores[opcaoSelecionada][0];
+            gama = arrValores[opcaoSelecionada][1];
+            ro = arrValores[opcaoSelecionada][2];
+            alfa = arrValores[opcaoSelecionada][3];
+            double[][] arrayResultado = new double[0][0];
+            if (opcao == 1) {
+                arrayResultado = euler(dias, h, N, beta, gama, ro, alfa);
+            } else if (opcao == 2) {
+                arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
+            }
 
-        escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada]);
-        criarScriptGnu(arrNomes[opcaoSelecionada], opcao, dias, arrNomes[opcaoSelecionada], N, true);
-        imprimirImagem(arrNomes[opcaoSelecionada] + ".csv", true);
+            escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada]);
+            criarScriptGnu(arrNomes[opcaoSelecionada], opcao, dias, arrNomes[opcaoSelecionada], N, interativo);
+            imprimirImagem(arrNomes[opcaoSelecionada], interativo);
+        }
     }
 
     public static void escreverParaCsv(double[][] matriz, String nomeFicheiroSaida) throws FileNotFoundException {
-        //String fileName = "Título";
-        //PrintWriter out = new PrintWriter(fileName + ".csv");
+
         PrintWriter out = new PrintWriter(nomeFicheiroSaida + ".csv");
         out.println("dias" + ";" + "S" + ";" + "I" + ";" + "R" + ";" + "N");
         for (int i = 0; i < matriz.length; i++) {
@@ -277,6 +295,7 @@ public class Main {
 
     public static void imprimirImagem(String fileName, boolean interativo) throws IOException {
         Runtime rt = Runtime.getRuntime();
+        //rt.exec("gnuplot -p " + fileName + ".gp");
         if (interativo) {
             rt.exec("gnuplot -p " + fileName + ".gp");
         } else {
@@ -293,10 +312,10 @@ public class Main {
             nomeMetodo = "Runge-Kutta de ordem 4";
         }
         if (!interativo) {
-            out.println("set terminal png size 640,480 \n");
+            out.println("set terminal png size 640,480 \n" +
+                    "set output '" + nome + ".png'\n" );
         }
         out.println(
-                "set output '" + nome + ".png'\n" +
                         "set title 'Distribuicao da falsa noticia(" + nomeMetodo + ")'\n" +
                         "set xlabel 'Numero dias'\n" +
                         "set ylabel 'Populacao'\n" +

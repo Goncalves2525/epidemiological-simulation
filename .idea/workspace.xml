@@ -6,18 +6,11 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="Alteração menu opções&#10;Leitor linha comandos&#10;alterações métodos Euler e RK4">
-      <change afterPath="$PROJECT_DIR$/src/Calculos.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ ruca .png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ ruca.png" beforeDir="false" />
+    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="alterações métodos de leitura de dados e criação de imagem;&#10;criação de nova classe para cálculos auxiliares">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ruca.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Título.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resultado.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ruca.gp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ruca.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dina.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dina.gp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vazio.csv" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,6 +49,7 @@
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
@@ -147,7 +141,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671329230980</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="alterações métodos de leitura de dados e criação de imagem">
+      <created>1671650776240</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1671650776240</updated>
+    </task>
+    <task id="LOCAL-00011" summary="alterações métodos de leitura de dados e criação de imagem;&#10;criação de nova classe para cálculos auxiliares">
+      <created>1671650799978</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1671650799978</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -168,7 +176,9 @@
     <MESSAGE value="merge com SC" />
     <MESSAGE value="Adicionado o modulo para ir ao ficheiro buscar o array de nomes e o array de dados" />
     <MESSAGE value="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome" />
-    <option name="LAST_COMMIT_MESSAGE" value="Foi introduzido um método para receber a informação do nome do ficheiro e verificar se ele existe, senão volta a pedir o nome" />
+    <MESSAGE value="alterações métodos de leitura de dados e criação de imagem" />
+    <MESSAGE value="alterações métodos de leitura de dados e criação de imagem;&#10;criação de nova classe para cálculos auxiliares" />
+    <option name="LAST_COMMIT_MESSAGE" value="alterações métodos de leitura de dados e criação de imagem;&#10;criação de nova classe para cálculos auxiliares" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -183,8 +193,8 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>262</line>
-          <option name="timeStamp" value="11" />
+          <line>299</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
