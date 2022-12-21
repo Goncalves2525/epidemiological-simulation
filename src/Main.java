@@ -6,10 +6,10 @@ import java.util.Scanner;
 
 public class Main {
 
+    static Calculos cs = new Calculos();
 
     public static void main(String[] args) throws IOException {
         Scanner sc = new Scanner(System.in);
-
         if ((args.length == 0)) {
             mostrarMenuOpcoes(sc);
         } else {
@@ -187,12 +187,12 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("Método Euler");
-                    lerValoresParaIniciarMetodos(sc,opcao);
+                    lerValoresParaIniciarMetodos(sc, opcao);
                     opcaoValida = true;
                     break;
                 case 2:
                     System.out.println("Método RK4");
-                    lerValoresParaIniciarMetodos(sc,opcao);
+                    lerValoresParaIniciarMetodos(sc, opcao);
                     opcaoValida = true;
                     break;
                 default:
@@ -217,7 +217,7 @@ public class Main {
         //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
         int numLinhas = contarLinhasFicheiro(nomeFicheiroIn) - 1;
 
-        double numPassos = dias/h;
+        double numPassos = dias / h;
         //Array dos nomes
         String[] arrNomes = new String[numLinhas];
         preencherNomes(arrNomes, nomeFicheiroIn);
@@ -230,68 +230,81 @@ public class Main {
 
         int escolha = 0;
         for (int i = 0; i < arrNomes.length; i++) {
-            escolha = i +1;
+            escolha = i + 1;
             System.out.println("(" + escolha + ")" + " - " + arrNomes[i]);
         }
         escolha++;
-        System.out.println("(" + escolha + ")" + "-" + "Escolher todas as opções");
+        System.out.println("(" + escolha + ")" + " - " + "Escolher todas as opções");
         System.out.print("Que pessoa pretende analisar? ");
         int opcaoSelecionada = sc.nextInt() - 1;
 
-        double beta = arrValores[opcaoSelecionada][0];
-        double gama = arrValores[opcaoSelecionada][1];
-        double ro = arrValores[opcaoSelecionada][2];
-        double alfa = arrValores[opcaoSelecionada][3];
+        //se a opção selecionada for igual ao maior número das opções, é porque o user pediu para analisar todos as pessoas
+        if (opcaoSelecionada == escolha) {
 
-        double [][] arrayResultado = new double[0][0];
-        if(opcao == 1){
-            arrayResultado = euler(dias,h,N,beta,gama,ro,alfa);
         }
-        else if(opcao == 2){
-            arrayResultado = RK4(alfa,beta,gama,ro,dias,h,N);
+        double beta = 0;
+        double gama = 0;
+        double ro = 0;
+        double alfa = 0;
+
+        beta = arrValores[opcaoSelecionada][0];
+        gama = arrValores[opcaoSelecionada][1];
+        ro = arrValores[opcaoSelecionada][2];
+        alfa = arrValores[opcaoSelecionada][3];
+
+        double[][] arrayResultado = new double[0][0];
+        if (opcao == 1) {
+            arrayResultado = euler(dias, h, N, beta, gama, ro, alfa);
+        } else if (opcao == 2) {
+            arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
         }
 
-        escreverParaCsv(arrayResultado);
-
-        criarScriptGnu("ruca",opcao,);
-        //terá que entrar o nome do ficheiro que sai do "escreverParaCsv
-        imprimirImagem("resultado.csv",true);
+        escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada]);
+        criarScriptGnu(arrNomes[opcaoSelecionada], opcao, dias, arrNomes[opcaoSelecionada], N, true);
+        imprimirImagem(arrNomes[opcaoSelecionada] + ".csv", true);
     }
 
-    public static void escreverParaCsv(double[][] matriz) throws FileNotFoundException {
-        String fileName = "Título";
-        PrintWriter out = new PrintWriter(fileName + ".csv");
-        out.println("dias"+";"+"S"+";"+"I"+";"+"R"+";"+"N");
+    public static void escreverParaCsv(double[][] matriz, String nomeFicheiroSaida) throws FileNotFoundException {
+        //String fileName = "Título";
+        //PrintWriter out = new PrintWriter(fileName + ".csv");
+        PrintWriter out = new PrintWriter(nomeFicheiroSaida + ".csv");
+        out.println("dias" + ";" + "S" + ";" + "I" + ";" + "R" + ";" + "N");
         for (int i = 0; i < matriz.length; i++) {
-            out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2]+ ";" + matriz[i][3]+ ";" + matriz[i][4]);
+            out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2] + ";" + matriz[i][3] + ";" + matriz[i][4]);
         }
         out.close();
     }
 
     public static void imprimirImagem(String fileName, boolean interativo) throws IOException {
         Runtime rt = Runtime.getRuntime();
-        if(interativo){
-            rt.exec("gnuplot -p "+fileName+".gp");
-        }
-       else{
-            rt.exec("gnuplot "+fileName+".gp");
+        if (interativo) {
+            rt.exec("gnuplot -p " + fileName + ".gp");
+        } else {
+            rt.exec("gnuplot " + fileName + ".gp");
         }
     }
-    public static void criarScriptGnu(String nome, String metodo, int numDias, String filename, int populacao, boolean interativo) throws FileNotFoundException {
+
+    public static void criarScriptGnu(String nome, int metodo, int numDias, String filename, int populacao, boolean interativo) throws FileNotFoundException {
         PrintWriter out = new PrintWriter(nome + ".gp");
-        if(!interativo){
+        String nomeMetodo = "";
+        if (metodo == 1) {
+            nomeMetodo = "Euler";
+        } else {
+            nomeMetodo = "Runge-Kutta de ordem 4";
+        }
+        if (!interativo) {
             out.println("set terminal png size 640,480 \n");
         }
         out.println(
-                "set output '"+nome+".png'\n" +
-                "set title 'Distribuicao da falsa noticia("+metodo+")'\n" +
-                "set xlabel 'Numero dias'\n" +
-                "set ylabel 'Populacao'\n" +
-                "set xrange [1:"+numDias+"]\n" +
-                "set yrange [1:"+populacao+"]\n" +
-                "set grid\n" +
-                "set datafile separator \";\"\n" +
-                "plot for [col=2:4] '"+filename+".csv' using 0:col with lines title columnheader");
+                "set output '" + nome + ".png'\n" +
+                        "set title 'Distribuicao da falsa noticia(" + nomeMetodo + ")'\n" +
+                        "set xlabel 'Numero dias'\n" +
+                        "set ylabel 'Populacao'\n" +
+                        "set xrange [1:" + numDias + "]\n" +
+                        "set yrange [1:" + populacao + "]\n" +
+                        "set grid\n" +
+                        "set datafile separator \";\"\n" +
+                        "plot for [col=2:4] '" + filename + ".csv' using 0:col with lines title columnheader");
         out.close();
     }
 
