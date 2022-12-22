@@ -353,7 +353,7 @@ public class Main {
     public static double[][] RK4(double alfa, double beta, double gamma, double ro, int dias, double h, double varNPop) {
         double passosNumDia = 1 / h;
 
-        double[][] resultadoYn = new double[dias][3];
+        double[][] resultadoYn = new double[dias][5];
         double kS = 0;
         double kI = 0;
         double kR = 0;
@@ -416,9 +416,11 @@ public class Main {
                 y0ParaR = ynParaR;
 
             }
-            resultadoYn[i][0] = ynParaS;
-            resultadoYn[i][1] = ynParaI;
-            resultadoYn[i][2] = ynParaR;
+            resultadoYn[i][0] = i;
+            resultadoYn[i][1] = ynParaS;
+            resultadoYn[i][2] = ynParaI;
+            resultadoYn[i][3] = ynParaR;
+            resultadoYn[i][4] = ynParaS + ynParaI + ynParaR;
         }
 
         return resultadoYn;

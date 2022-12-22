@@ -6,9 +6,8 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="melhorias gnuplot">
+    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="alteração método criação ficheiro&#10;melhorias leitura linha de comandos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -161,7 +160,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671652664489</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="alteração método criação ficheiro&#10;melhorias leitura linha de comandos">
+      <created>1671657652059</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1671657652059</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -185,7 +191,8 @@
     <MESSAGE value="alterações métodos de leitura de dados e criação de imagem" />
     <MESSAGE value="alterações métodos de leitura de dados e criação de imagem;&#10;criação de nova classe para cálculos auxiliares" />
     <MESSAGE value="melhorias gnuplot" />
-    <option name="LAST_COMMIT_MESSAGE" value="melhorias gnuplot" />
+    <MESSAGE value="alteração método criação ficheiro&#10;melhorias leitura linha de comandos" />
+    <option name="LAST_COMMIT_MESSAGE" value="alteração método criação ficheiro&#10;melhorias leitura linha de comandos" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
