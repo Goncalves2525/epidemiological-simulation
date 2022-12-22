@@ -26,7 +26,7 @@ public class Main {
         int paramT = 0;  // populacao >0
         int paramD = 0;  //num dias; d>0
         double varn = 0;
-        String nomeFicheiroSaida = "";
+        //String nomeFicheiroSaida = "";
 
         nomeFicheiroEntrada = argumentos[0];
         if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
@@ -48,10 +48,10 @@ public class Main {
         if (paramD < 0) {
             inputValido = false;
         }
-        nomeFicheiroSaida = argumentos[9];
-        if (nomeFicheiroSaida.indexOf(".csv") == -1) {
-            inputValido = false;
-        }
+//        nomeFicheiroSaida = argumentos[9];
+//        if (nomeFicheiroSaida.indexOf(".csv") == -1) {
+//            inputValido = false;
+//        }
         varn = paramT / paramP;
 
         if (inputValido) {
