@@ -77,7 +77,7 @@ public class Main {
                     arrayResultado = RK4(alfa, beta, gama, ro, paramD, paramP, paramT);
                 }
 
-                String nomeFicheiro = "m" + paramM + "p" + String.format("%.1f", paramP) + "t" + paramT + "d" + paramD;
+                String nomeFicheiro = "m" + paramM + "p" + String.valueOf(paramP).replace(".","") + "t" + paramT + "d" + paramD;
                 escreverParaCsv(arrayResultado, arrNomesFicheiro[i]+nomeFicheiro);
                 criarScriptGnu(arrNomesFicheiro[i]+ nomeFicheiro, paramM, paramD, arrNomesFicheiro[i] + nomeFicheiro, paramT, false);
                 imprimirImagem(arrNomesFicheiro[i]+ nomeFicheiro, false);
@@ -267,7 +267,7 @@ public class Main {
         double gama = 0;
         double ro = 0;
         double alfa = 0;
-        String nomeFicheiro = "m" + opcao + "p" + String.format("%.1f", h) + "t" + N + "d" + dias;
+        String nomeFicheiro = "m" + opcao + "p" + String.valueOf(h).replace(".","") + "t" + N + "d" + dias;
         //se a opção selecionada for igual ao maior número das opções, é porque o user pediu para analisar todos as pessoas
         if (opcaoSelecionada == escolha - 1) {
             for (int i = 0; i < arrNomes.length; i++) {

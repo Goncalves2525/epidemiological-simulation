@@ -6,13 +6,10 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="remoção do parametro do ficheiro de saída">
-      <change afterPath="$PROJECT_DIR$/Dinam1p0t1000d30.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Dinam1p0t1000d30.gp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Rucam1p0t1000d30.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Rucam1p0t1000d30.gp" afterDir="false" />
+    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="correção formatação string">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Calculos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dinam2p0t1000d30.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dinam2p0t1000d30.gp" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -187,7 +184,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671733087397</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="correção formatação string">
+      <created>1671735000076</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1671735000076</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -214,7 +218,8 @@
     <MESSAGE value="alteração método criação ficheiro&#10;melhorias leitura linha de comandos" />
     <MESSAGE value="correção output do método RK4" />
     <MESSAGE value="remoção do parametro do ficheiro de saída" />
-    <option name="LAST_COMMIT_MESSAGE" value="remoção do parametro do ficheiro de saída" />
+    <MESSAGE value="correção formatação string" />
+    <option name="LAST_COMMIT_MESSAGE" value="correção formatação string" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
