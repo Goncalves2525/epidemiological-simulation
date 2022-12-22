@@ -6,8 +6,14 @@
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="alteração método criação ficheiro&#10;melhorias leitura linha de comandos">
+    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="remoção do parametro do ficheiro de saída">
+      <change afterPath="$PROJECT_DIR$/Dinam1p0t1000d30.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Dinam1p0t1000d30.gp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Rucam1p0t1000d30.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Rucam1p0t1000d30.gp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Calculos.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Calculos.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -167,7 +173,21 @@
       <option name="project" value="LOCAL" />
       <updated>1671657652059</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="correção output do método RK4">
+      <created>1671733003779</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1671733003779</updated>
+    </task>
+    <task id="LOCAL-00015" summary="remoção do parametro do ficheiro de saída">
+      <created>1671733087397</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1671733087397</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -192,7 +212,9 @@
     <MESSAGE value="alterações métodos de leitura de dados e criação de imagem;&#10;criação de nova classe para cálculos auxiliares" />
     <MESSAGE value="melhorias gnuplot" />
     <MESSAGE value="alteração método criação ficheiro&#10;melhorias leitura linha de comandos" />
-    <option name="LAST_COMMIT_MESSAGE" value="alteração método criação ficheiro&#10;melhorias leitura linha de comandos" />
+    <MESSAGE value="correção output do método RK4" />
+    <MESSAGE value="remoção do parametro do ficheiro de saída" />
+    <option name="LAST_COMMIT_MESSAGE" value="remoção do parametro do ficheiro de saída" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
