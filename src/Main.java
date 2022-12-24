@@ -352,10 +352,7 @@ public class Main {
     public static double[][] RK4(double alfa, double beta, double gamma, double ro, int dias, double h, double varNPop) {
         double passosNumDia = 1 / h;
 
-        double[][] resultadoYn = new double[dias][5];
-        double kS = 0;
-        double kI = 0;
-        double kR = 0;
+
         int i = 0;
         double k1S = 0;
         double k2S = 0;
@@ -370,10 +367,6 @@ public class Main {
         double k3R = 0;
         double k4R = 0;
 
-        double x0ParaS = 0;
-        double x0ParaI = 0;
-        double x0ParaR = 0;
-
         double ynParaS = 0;
         double ynParaI = 0;
         double ynParaR = 0;
@@ -382,37 +375,40 @@ public class Main {
         double y0ParaI = 1;
         double y0ParaR = 0;
 
-        for (i = 0; i < dias; i++) {
-            for (int j = 0; j < passosNumDia; j++) {
-                //k1 = h * f(x0,y0);
-                k1S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI);
-                k1I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
-                k1R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
-                //k2 = h * f(x0 + h/2, y0 + k1/2);
-                k2S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + (k1S / 2));
-                k2I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
-                k2R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
-                //k3 = h * f(x0 + h/2, y0 + k2/2);
-                k3S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + (k2S / 2));
-                k3I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
-                k3R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
-                //k4 = h * f(x0 + h,y0 + k3);
-                k4S = h * derivadaSOrdemT(beta, y0ParaS, y0ParaI + k3S);
-                k4I = h * derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
-                k4R = h * derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
+        double[][] resultadoYn = new double[dias][5];
+        resultadoYn[0][0] = 0;
+        resultadoYn[0][1] = y0ParaS;
+        resultadoYn[0][2] = y0ParaI;
+        resultadoYn[0][3] = y0ParaR;
+        resultadoYn[0][4] = varNPop;
 
-                kS = (k1S + 2 * k2S + 2 * k3S + k4S) / 6;
-                kI = (k1I + 2 * k2I + 2 * k3I + k4I) / 6;
-                kR = (k1R + 2 * k2R + 2 * k3R + k4R) / 6;
-                ynParaS = y0ParaS + kS;
-                ynParaI = y0ParaI + kI;
-                ynParaR = y0ParaR + kR;
-                x0ParaS += h;
-                x0ParaI += h;
-                x0ParaR += h;
+        for (i = 1; i < dias; i++) {
+            for (int j = 0; j < passosNumDia; j++) {
+
+                k1S = derivadaSOrdemT(beta, y0ParaS, y0ParaI);
+                k1I = derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
+                k1R = derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
+
+                k2S = derivadaSOrdemT(beta, y0ParaS + (h/2)*k1S, y0ParaI + (h/2)*k1I);
+                k2I = derivadaIOrdemT(ro, beta, y0ParaS + (h/2)*k1S, y0ParaI +(h/2)*k1I, gamma, alfa, y0ParaR + (h/2)*k1R);
+                k2R = derivadaROrdemT(gamma, y0ParaI + (h/2)*k1I, alfa, y0ParaR + (h/2)*k1R, ro, beta, y0ParaS + (h/2)*k1S);
+
+                k3S = derivadaSOrdemT(beta, y0ParaS + (h/2)*k2S, y0ParaI + (h/2)*k2I);
+                k3I = derivadaIOrdemT(ro, beta, y0ParaS + (h/2)*k2S, y0ParaI + (h/2)*k2I, gamma, alfa, y0ParaR + (h/2)*k2R);
+                k3R = derivadaROrdemT(gamma, y0ParaI + (h/2)*k2I, alfa, y0ParaR + (h/2)*k2R, ro, beta, y0ParaS + (h/2)*k2S);
+
+                k4S = derivadaSOrdemT(beta, y0ParaS + h*k3S, y0ParaI + h*k3I);
+                k4I = derivadaIOrdemT(ro, beta, y0ParaS + h*k3S, y0ParaI + h*k3I, gamma, alfa, y0ParaR + h*k3R);
+                k4R = derivadaROrdemT(gamma, y0ParaI + h*k3I, alfa, y0ParaR + h*k3R, ro, beta, y0ParaS + h*k3S);
+
+                ynParaS = y0ParaS + (h/6) * (k1S + 2*k2S + 2*k3S + k4S);
+                ynParaI = y0ParaI + (h/6) * (k1I + 2*k2I + 2*k3I + k4I);;
+                ynParaR = y0ParaR + (h/6) * (k1R + 2*k2R + 2*k3R + k4R);;
+
                 y0ParaS = ynParaS;
                 y0ParaI = ynParaI;
                 y0ParaR = ynParaR;
+
 
             }
             resultadoYn[i][0] = i;
@@ -459,9 +455,14 @@ public class Main {
 
         //A matriz de valores a devolver
         double[][] matriz = new double[dias][5];
+        matriz[0][0] = 0;
+        matriz[0][1] = s0;
+        matriz[0][2] = i0;
+        matriz[0][3] = r0;
+        matriz[0][4] = populacao;
 
         //O método de Euler
-        for (int i = 0; i < dias; i++) {
+        for (int i = 1; i < dias; i++) {
             for (int j = 0; j < passosNumDia; j++) {
                 sn = s0 + passo * derivadaSOrdemT(beta, s0, i0);
                 in = i0 + passo * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
@@ -471,8 +472,8 @@ public class Main {
                 i0 = in;
                 r0 = rn;
 
-
             }
+
             matriz[i][0] = i;
             matriz[i][1] = sn;
             matriz[i][2] = in;
