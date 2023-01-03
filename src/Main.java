@@ -12,11 +12,12 @@ public class Main {
         if ((args.length == 0)) {
             mostrarMenuOpcoes(sc);
         } else {
-            lerArgumentosLinhaComandos(args);
+            lerArgumentosLinhaComandos(args, sc);
         }
     }
 
-    public static void lerArgumentosLinhaComandos(String[] argumentos) throws IOException {
+    public static void lerArgumentosLinhaComandos(String[] argumentos, Scanner sc) throws IOException {
+        boolean interativo = false; //método não interativo, nunca será mudado o valor
         boolean inputValido = true;
         String nomeFicheiroEntrada = "";
         //-m X -p Y -t Z -d K ficheiroResultado.csv
@@ -25,9 +26,8 @@ public class Main {
         int paramT = 0;  // populacao >0
         int paramD = 0;  //num dias; d>0
         double varn = 0;
-        //String nomeFicheiroSaida = "";
 
-        nomeFicheiroEntrada = argumentos[0];
+        nomeFicheiroEntrada = Validacoes.verificaFicheiro(sc,argumentos[0],interativo);
         if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
             inputValido = false;
         }
@@ -35,26 +35,24 @@ public class Main {
         if (paramM != 1 && paramM != 2) {
             inputValido = false;
         }
-        paramP = Double.parseDouble(argumentos[4]);
-        if (paramP < 0 || paramP > 1) {
+
+        paramP = Validacoes.verificaPassoIntegracao(sc,Double.parseDouble(argumentos[4]),interativo);
+        if(paramP <= -1){
             inputValido = false;
         }
-        paramT = Integer.parseInt(argumentos[6]);
+
+        paramT = Validacoes.verificaTamanhoPopulacao(sc,Integer.parseInt(argumentos[6]),interativo);
         if (paramT < 0) {
             inputValido = false;
         }
-        paramD = Integer.parseInt(argumentos[8]);
+
+        paramD = Validacoes.verificaNumeroDias(sc,Integer.parseInt(argumentos[8]),interativo);
         if (paramD < 0) {
             inputValido = false;
         }
-//        nomeFicheiroSaida = argumentos[9];
-//        if (nomeFicheiroSaida.indexOf(".csv") == -1) {
-//            inputValido = false;
-//        }
-        varn = paramT / paramP;
 
         if (inputValido) {
-            int numLinhas = contarLinhasFicheiro(nomeFicheiroEntrada) - 1;
+            int numLinhas = OperacaoFicheiros.contarLinhasFicheiro(nomeFicheiroEntrada) - 1;
             String[] arrNomesFicheiro = new String[numLinhas];
             preencherNomes(arrNomesFicheiro, nomeFicheiroEntrada);
             //Array de Valores
@@ -72,102 +70,20 @@ public class Main {
                 alfa = arrValores[i][3];
                 double[][] arrayResultado = new double[0][0];
                 if (paramM == 1) {
-                    arrayResultado = euler(paramD, paramP, paramT, beta, gama, ro, alfa);
+                    arrayResultado = Calculos.euler(paramD, paramP, paramT, beta, gama, ro, alfa);
                 } else if (paramM == 2) {
-                    arrayResultado = RK4(alfa, beta, gama, ro, paramD, paramP, paramT);
+                    arrayResultado = Calculos.RK4(alfa, beta, gama, ro, paramD, paramP, paramT);
                 }
 
                 String nomeFicheiro = "m" + paramM + "p" + String.valueOf(paramP).replace(".","") + "t" + paramT + "d" + paramD;
-                escreverParaCsv(arrayResultado, arrNomesFicheiro[i]+nomeFicheiro);
-                criarScriptGnu(arrNomesFicheiro[i]+ nomeFicheiro, paramM, paramD, arrNomesFicheiro[i] + nomeFicheiro, paramT, false);
-                imprimirImagem(arrNomesFicheiro[i]+ nomeFicheiro, false);
+                OperacaoFicheiros.escreverParaCsv(arrayResultado, arrNomesFicheiro[i]+nomeFicheiro);
+                Gnuplot.criarScriptGnu(arrNomesFicheiro[i]+ nomeFicheiro, paramM, paramD, arrNomesFicheiro[i] + nomeFicheiro, paramT, false);
+                Gnuplot.gerarGrafGnuPlot(arrNomesFicheiro[i]+ nomeFicheiro, false);
             }
 
         } else {
-            System.out.println("parâmetros inválidos, volte a tentar!");
+            System.out.println("Parâmetros inválidos, volte a executar o programa com parâmetros válidos!");
         }
-    }
-
-    private static String verificaFicheiro(Scanner sc) throws FileNotFoundException {
-        String nomeFicheiroIn = " ";
-        boolean nomeValido = false;
-        System.out.print("Escreva o nome do ficheiro de entrada de dados em formato .csv: ");
-
-        while (!nomeValido) {
-            nomeFicheiroIn = sc.next();
-            File importt = new File(nomeFicheiroIn);
-
-            if (importt.exists()) {
-                // o ficheiro existe, podemos abri-lo
-                // verificamos agora se não está vazio
-                Scanner impor = new Scanner(new File(nomeFicheiroIn));
-                if (impor.hasNextLine()) {
-                    nomeValido = true;
-                } else {
-                    System.out.print("O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: ");
-                }
-                impor.close();
-            } else {
-                // o ficheiro não existe, pedimos de novo o nome do ficheiro
-                System.out.print("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
-            }
-        }
-        return nomeFicheiroIn;
-    }
-
-    private static double verificaPassoIntegracao(Scanner sc) {
-        double h = -1;
-        while (verificaIntervaloDoisNumeros(h, 0, 1) == false) {
-            System.out.print("Introduza o valor do passo do intervalo ]0,1[ : ");
-            h = sc.nextDouble();
-        }
-        return h;
-    }
-
-    private static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {
-        if (num <= numMenor || num >= numMaior) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private static int verificaNumeroDias(Scanner sc) {
-        int N = -1;
-        while (verificaMaiorZero(N) == false) {
-            System.out.print("Introduza o número de dias a considerar para análise: ");
-            N = sc.nextInt();
-        }
-        return N;
-    }
-
-    private static int verificaTamanhoPopulacao(Scanner sc) {
-        int N = -1;
-        while (verificaMaiorZero(N) == false) {
-            System.out.print("Introduza o tamanho da população: ");
-            N = sc.nextInt();
-        }
-        return N;
-    }
-
-
-    private static boolean verificaMaiorZero(int num) {
-        if (num <= 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    private static int contarLinhasFicheiro(String nomeFicheiroIn) throws FileNotFoundException {
-        int cont = 0;
-        Scanner impor = new Scanner(new File(nomeFicheiroIn));
-        while (impor.hasNextLine()) {
-            impor.nextLine();
-            cont++;
-        }
-        impor.close();
-        return cont;
     }
 
     private static void preencherNomes(String[] arrNomes, String nomeFicheiroIn) throws FileNotFoundException {
@@ -196,7 +112,6 @@ public class Main {
 
 
     public static void mostrarMenuOpcoes(Scanner sc) throws IOException {
-        double varn = 0;
         boolean opcaoValida = false;
         int opcao = 0;
         do {
@@ -228,21 +143,20 @@ public class Main {
 
     public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao, boolean interativo) throws IOException {
         //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
-        String nomeFicheiroIn = verificaFicheiro(sc);
+        String nomeFicheiroIn = Validacoes.verificaFicheiro(sc,"",interativo);
 
-        //Pede e verifica intervalo de passo de integração
-        double h = verificaPassoIntegracao(sc);
+        //Pede e verifica intervalo de passo de integração (o 0 é inútil no caso interativo)
+        double h = Validacoes.verificaPassoIntegracao(sc,0, interativo);
 
-        //Pede e verifica tamanho da população
-        int N = verificaTamanhoPopulacao(sc);
+        //Pede e verifica tamanho da população (o 0 é inútil no caso interativo)
+        int N = Validacoes.verificaTamanhoPopulacao(sc, 0, interativo);
 
-        //Pede e verifica numero de dias da análise
-        int dias = verificaNumeroDias(sc);
+        //Pede e verifica numero de dias da análise (o 0 é inútil no caso interativo)
+        int dias = Validacoes.verificaNumeroDias(sc,0,interativo);
 
         //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
-        int numLinhas = contarLinhasFicheiro(nomeFicheiroIn) - 1;
+        int numLinhas = OperacaoFicheiros.contarLinhasFicheiro(nomeFicheiroIn) - 1;
 
-        double numPassos = dias / h;
         //Array dos nomes
         String[] arrNomes = new String[numLinhas];
         preencherNomes(arrNomes, nomeFicheiroIn);
@@ -277,14 +191,14 @@ public class Main {
                 alfa = arrValores[i][3];
                 double[][] arrayResultado = new double[0][0];
                 if (opcao == 1) {
-                    arrayResultado = euler(dias, h, N, beta, gama, ro, alfa);
+                    arrayResultado = Calculos.euler(dias, h, N, beta, gama, ro, alfa);
                 } else if (opcao == 2) {
-                    arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
+                    arrayResultado = Calculos.RK4(alfa, beta, gama, ro, dias, h, N);
                 }
 
-                escreverParaCsv(arrayResultado, arrNomes[i] + nomeFicheiro);
-                criarScriptGnu(arrNomes[i]+ nomeFicheiro, opcao, dias, arrNomes[i] + nomeFicheiro, N, interativo);
-                imprimirImagem(arrNomes[i]+ nomeFicheiro, interativo);
+                OperacaoFicheiros.escreverParaCsv(arrayResultado, arrNomes[i] + nomeFicheiro);
+                Gnuplot.criarScriptGnu(arrNomes[i]+ nomeFicheiro, opcao, dias, arrNomes[i] + nomeFicheiro, N, interativo);
+                Gnuplot.gerarGrafGnuPlot(arrNomes[i]+ nomeFicheiro, interativo);
             }
         }
         else {
@@ -294,197 +208,24 @@ public class Main {
             alfa = arrValores[opcaoSelecionada][3];
             double[][] arrayResultado = new double[0][0];
             if (opcao == 1) {
-                arrayResultado = euler(dias, h, N, beta, gama, ro, alfa);
+                arrayResultado = Calculos.euler(dias, h, N, beta, gama, ro, alfa);
             } else if (opcao == 2) {
-                arrayResultado = RK4(alfa, beta, gama, ro, dias, h, N);
+                arrayResultado = Calculos.RK4(alfa, beta, gama, ro, dias, h, N);
             }
 
-            escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada] + nomeFicheiro);
-            criarScriptGnu(arrNomes[opcaoSelecionada]+ nomeFicheiro, opcao, dias, arrNomes[opcaoSelecionada] + nomeFicheiro, N, interativo);
-            imprimirImagem(arrNomes[opcaoSelecionada]+ nomeFicheiro, interativo);
+            OperacaoFicheiros.escreverParaCsv(arrayResultado, arrNomes[opcaoSelecionada] + nomeFicheiro);
+            Gnuplot.criarScriptGnu(arrNomes[opcaoSelecionada]+ nomeFicheiro, opcao, dias, arrNomes[opcaoSelecionada] + nomeFicheiro, N, interativo);
+            Gnuplot.gerarGrafGnuPlot(arrNomes[opcaoSelecionada]+ nomeFicheiro, interativo);
         }
     }
 
-    public static void escreverParaCsv(double[][] matriz, String nomeFicheiroSaida) throws FileNotFoundException {
-
-        PrintWriter out = new PrintWriter(nomeFicheiroSaida + ".csv");
-        out.println("dias" + ";" + "S" + ";" + "I" + ";" + "R" + ";" + "N");
-        for (int i = 0; i < matriz.length; i++) {
-            out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2] + ";" + matriz[i][3] + ";" + matriz[i][4]);
-        }
-        out.close();
-    }
-
-    public static void imprimirImagem(String fileName, boolean interativo) throws IOException {
-        Runtime rt = Runtime.getRuntime();
-        //rt.exec("gnuplot -p " + fileName + ".gp");
-        if (interativo) {
-            rt.exec("gnuplot -p " + fileName + ".gp");
-        } else {
-            rt.exec("gnuplot " + fileName + ".gp");
-        }
-    }
-
-    public static void criarScriptGnu(String nome, int metodo, int numDias, String filename, int populacao, boolean interativo) throws FileNotFoundException {
-        PrintWriter out = new PrintWriter(nome + ".gp");
-        String nomeMetodo = "";
-        if (metodo == 1) {
-            nomeMetodo = "Euler";
-        } else {
-            nomeMetodo = "Runge-Kutta de ordem 4";
-        }
-        if (!interativo) {
-            out.println("set terminal png size 640,480 \n" +
-                    "set output '" + nome + ".png'\n" );
-        }
-        out.println(
-                        "set title 'Distribuicao da falsa noticia(" + nomeMetodo + ")'\n" +
-                        "set xlabel 'Numero dias'\n" +
-                        "set ylabel 'Populacao'\n" +
-                        "set xrange [1:" + numDias + "]\n" +
-                        "set yrange [1:" + populacao + "]\n" +
-                        "set grid\n" +
-                        "set datafile separator \";\"\n" +
-                        "plot for [col=2:4] '" + filename + ".csv' using 0:col with lines title columnheader");
-        out.close();
-    }
-
-    public static double[][] RK4(double alfa, double beta, double gamma, double ro, int dias, double h, double varNPop) {
-        double passosNumDia = 1 / h;
 
 
-        int i = 0;
-        double k1S = 0;
-        double k2S = 0;
-        double k3S = 0;
-        double k4S = 0;
-        double k1I = 0;
-        double k2I = 0;
-        double k3I = 0;
-        double k4I = 0;
-        double k1R = 0;
-        double k2R = 0;
-        double k3R = 0;
-        double k4R = 0;
-
-        double ynParaS = 0;
-        double ynParaI = 0;
-        double ynParaR = 0;
-
-        double y0ParaS = varNPop - 1;
-        double y0ParaI = 1;
-        double y0ParaR = 0;
-
-        double[][] resultadoYn = new double[dias][5];
-        resultadoYn[0][0] = 0;
-        resultadoYn[0][1] = y0ParaS;
-        resultadoYn[0][2] = y0ParaI;
-        resultadoYn[0][3] = y0ParaR;
-        resultadoYn[0][4] = varNPop;
-
-        for (i = 1; i < dias; i++) {
-            for (int j = 0; j < passosNumDia; j++) {
-
-                k1S = derivadaSOrdemT(beta, y0ParaS, y0ParaI);
-                k1I = derivadaIOrdemT(ro, beta, y0ParaS, y0ParaI, gamma, alfa, y0ParaR);
-                k1R = derivadaROrdemT(gamma, y0ParaI, alfa, y0ParaR, ro, beta, y0ParaS);
-
-                k2S = derivadaSOrdemT(beta, y0ParaS + (h/2)*k1S, y0ParaI + (h/2)*k1I);
-                k2I = derivadaIOrdemT(ro, beta, y0ParaS + (h/2)*k1S, y0ParaI +(h/2)*k1I, gamma, alfa, y0ParaR + (h/2)*k1R);
-                k2R = derivadaROrdemT(gamma, y0ParaI + (h/2)*k1I, alfa, y0ParaR + (h/2)*k1R, ro, beta, y0ParaS + (h/2)*k1S);
-
-                k3S = derivadaSOrdemT(beta, y0ParaS + (h/2)*k2S, y0ParaI + (h/2)*k2I);
-                k3I = derivadaIOrdemT(ro, beta, y0ParaS + (h/2)*k2S, y0ParaI + (h/2)*k2I, gamma, alfa, y0ParaR + (h/2)*k2R);
-                k3R = derivadaROrdemT(gamma, y0ParaI + (h/2)*k2I, alfa, y0ParaR + (h/2)*k2R, ro, beta, y0ParaS + (h/2)*k2S);
-
-                k4S = derivadaSOrdemT(beta, y0ParaS + h*k3S, y0ParaI + h*k3I);
-                k4I = derivadaIOrdemT(ro, beta, y0ParaS + h*k3S, y0ParaI + h*k3I, gamma, alfa, y0ParaR + h*k3R);
-                k4R = derivadaROrdemT(gamma, y0ParaI + h*k3I, alfa, y0ParaR + h*k3R, ro, beta, y0ParaS + h*k3S);
-
-                ynParaS = y0ParaS + (h/6) * (k1S + 2*k2S + 2*k3S + k4S);
-                ynParaI = y0ParaI + (h/6) * (k1I + 2*k2I + 2*k3I + k4I);;
-                ynParaR = y0ParaR + (h/6) * (k1R + 2*k2R + 2*k3R + k4R);;
-
-                y0ParaS = ynParaS;
-                y0ParaI = ynParaI;
-                y0ParaR = ynParaR;
 
 
-            }
-            resultadoYn[i][0] = i;
-            resultadoYn[i][1] = ynParaS;
-            resultadoYn[i][2] = ynParaI;
-            resultadoYn[i][3] = ynParaR;
-            resultadoYn[i][4] = ynParaS + ynParaI + ynParaR;
-        }
-
-        return resultadoYn;
-    }
-
-    //−β.S.I
-    public static double derivadaSOrdemT(double beta, double s, double i) {
-        return -beta * s * i;
-    }
-
-    //ρ.β.S.I − γ.I + α.R
-    public static double derivadaIOrdemT(double ro, double beta, double s, double i, double gama, double alfa, double r) {
-        return ro * beta * s * i - gama * i + alfa * r;
-    }
-
-    //γ.I − α.R + (1 − ρ).β.S.I
-    public static double derivadaROrdemT(double gama, double i, double alfa, double r, double ro, double beta, double s) {
-        return gama * i - alfa * r + (1 - ro) * beta * s * i;
-    }
 
 
-    public static double[][] euler(int dias, double passo, int populacao, double beta, double gama, double ro, double alfa) {
 
-
-        //As 3 funções
-        double sn = 0;
-        double in = 0;
-        double rn = 0;
-
-        //Valores iniciais das 3 funções
-        double s0 = populacao - 1;
-        double i0 = 1;
-        double r0 = 0;
-
-        //Precisamos de saber quantos passos tem um dia para podermos exportar devidamente para ficheiro csv
-        double passosNumDia = 1 / passo;
-
-        //A matriz de valores a devolver
-        double[][] matriz = new double[dias][5];
-        matriz[0][0] = 0;
-        matriz[0][1] = s0;
-        matriz[0][2] = i0;
-        matriz[0][3] = r0;
-        matriz[0][4] = populacao;
-
-        //O método de Euler
-        for (int i = 1; i < dias; i++) {
-            for (int j = 0; j < passosNumDia; j++) {
-                sn = s0 + passo * derivadaSOrdemT(beta, s0, i0);
-                in = i0 + passo * derivadaIOrdemT(ro, beta, s0, i0, gama, alfa, r0);
-                rn = r0 + passo * derivadaROrdemT(gama, i0, alfa, r0, ro, beta, s0);
-
-                s0 = sn;
-                i0 = in;
-                r0 = rn;
-
-            }
-
-            matriz[i][0] = i;
-            matriz[i][1] = sn;
-            matriz[i][2] = in;
-            matriz[i][3] = rn;
-            matriz[i][4] = sn + in + rn;
-
-
-        }
-
-        return matriz;
-    }
 
 
 }
