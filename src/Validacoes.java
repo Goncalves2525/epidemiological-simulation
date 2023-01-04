@@ -3,37 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Validacoes {
-    public static String verificaFicheiro(Scanner sc, String nomeFicheiroEntrada, boolean interativo) throws FileNotFoundException {
-        String nomeFicheiroIn = " ";
-        boolean nomeValido = false;
-        if(interativo) {
-            System.out.print("Escreva o nome do ficheiro de entrada de dados em formato .csv: ");
 
-            while (!nomeValido) {
-                nomeFicheiroIn = sc.next();
-                File importt = new File(nomeFicheiroIn);
-
-                if (importt.exists()) {
-                    // o ficheiro existe, podemos abri-lo
-                    // verificamos agora se não está vazio
-                    Scanner impor = new Scanner(importt);
-                    if (impor.hasNextLine()) {
-                        nomeValido = true;
-                    } else {
-                        System.out.print("O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: ");
-                    }
-                    impor.close();
-                } else {
-                    // o ficheiro não existe, pedimos de novo o nome do ficheiro
-                    System.out.print("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
-                }
-            }
-        }
-        else{
-            nomeFicheiroIn = nomeFicheiroEntrada;
-        }
-        return nomeFicheiroIn;
-    }
 
     public static double verificaPassoIntegracao(Scanner sc, double valorH, boolean interativo) {
         double resultado = -1;

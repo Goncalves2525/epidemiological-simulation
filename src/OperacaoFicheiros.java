@@ -25,4 +25,59 @@ public class OperacaoFicheiros {
         impor.close();
         return cont;
     }
+    public static String verificaFicheiro(Scanner sc, String nomeFicheiroEntrada, boolean interativo) throws FileNotFoundException {
+        String nomeFicheiroIn = " ";
+        boolean nomeValido = false;
+        if(interativo) {
+            System.out.print("Escreva o nome do ficheiro de entrada de dados em formato .csv: ");
+
+            while (!nomeValido) {
+                nomeFicheiroIn = sc.next();
+                File importt = new File(nomeFicheiroIn);
+
+                if (importt.exists()) {
+                    // o ficheiro existe, podemos abri-lo
+                    // verificamos agora se não está vazio
+                    Scanner impor = new Scanner(importt);
+                    if (impor.hasNextLine()) {
+                        nomeValido = true;
+                    } else {
+                        System.out.print("O ficheiro existe mas está vazio. Por favor, insira de novo o nome de um ficheiro válido: ");
+                    }
+                    impor.close();
+                } else {
+                    // o ficheiro não existe, pedimos de novo o nome do ficheiro
+                    System.out.print("O ficheiro não existe. Por favor, insira de novo o nome do ficheiro: ");
+                }
+            }
+        }
+        else{
+            nomeFicheiroIn = nomeFicheiroEntrada;
+        }
+        return nomeFicheiroIn;
+    }
+
+    public static void preencherNomes(String[] arrNomes, String nomeFicheiroIn) throws FileNotFoundException {
+        Scanner impor = new Scanner(new File(nomeFicheiroIn));
+        impor.nextLine();
+        for (int i = 0; i < arrNomes.length; i++) {
+            String[] itensDaLinha = impor.nextLine().split(";");
+            arrNomes[i] = itensDaLinha[0];
+        }
+        impor.close();
+    }
+
+    public static void preencherValores(double[][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {
+        Scanner impor = new Scanner(new File(nomeFicheiroIn));
+        impor.nextLine();
+        for (int i = 0; i < arrValores.length; i++) {
+            String variavelApoio = impor.nextLine();
+            variavelApoio = variavelApoio.replace(',', '.');
+            String[] itensDaLinha = variavelApoio.split(";");
+            for (int j = 1; j < itensDaLinha.length; j++) {
+                arrValores[i][j - 1] = Double.parseDouble(itensDaLinha[j]);
+            }
+        }
+        impor.close();
+    }
 }

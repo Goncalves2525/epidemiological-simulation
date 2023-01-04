@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class Main {
@@ -27,7 +26,7 @@ public class Main {
         int paramD = 0;  //num dias; d>0
         double varn = 0;
 
-        nomeFicheiroEntrada = Validacoes.verificaFicheiro(sc,argumentos[0],interativo);
+        nomeFicheiroEntrada = OperacaoFicheiros.verificaFicheiro(sc,argumentos[0],interativo);
         if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
             inputValido = false;
         }
@@ -54,10 +53,10 @@ public class Main {
         if (inputValido) {
             int numLinhas = OperacaoFicheiros.contarLinhasFicheiro(nomeFicheiroEntrada) - 1;
             String[] arrNomesFicheiro = new String[numLinhas];
-            preencherNomes(arrNomesFicheiro, nomeFicheiroEntrada);
+            OperacaoFicheiros.preencherNomes(arrNomesFicheiro, nomeFicheiroEntrada);
             //Array de Valores
             double[][] arrValores = new double[numLinhas][4];
-            preencherValores(arrValores, nomeFicheiroEntrada);
+            OperacaoFicheiros.preencherValores(arrValores, nomeFicheiroEntrada);
 
             double beta = 0;
             double gama = 0;
@@ -86,29 +85,7 @@ public class Main {
         }
     }
 
-    private static void preencherNomes(String[] arrNomes, String nomeFicheiroIn) throws FileNotFoundException {
-        Scanner impor = new Scanner(new File(nomeFicheiroIn));
-        impor.nextLine();
-        for (int i = 0; i < arrNomes.length; i++) {
-            String[] itensDaLinha = impor.nextLine().split(";");
-            arrNomes[i] = itensDaLinha[0];
-        }
-        impor.close();
-    }
 
-    private static void preencherValores(double[][] arrValores, String nomeFicheiroIn) throws FileNotFoundException {
-        Scanner impor = new Scanner(new File(nomeFicheiroIn));
-        impor.nextLine();
-        for (int i = 0; i < arrValores.length; i++) {
-            String variavelApoio = impor.nextLine();
-            variavelApoio = variavelApoio.replace(',', '.');
-            String[] itensDaLinha = variavelApoio.split(";");
-            for (int j = 1; j < itensDaLinha.length; j++) {
-                arrValores[i][j - 1] = Double.parseDouble(itensDaLinha[j]);
-            }
-        }
-        impor.close();
-    }
 
 
     public static void mostrarMenuOpcoes(Scanner sc) throws IOException {
@@ -143,7 +120,7 @@ public class Main {
 
     public static void lerValoresParaIniciarMetodos(Scanner sc, int opcao, boolean interativo) throws IOException {
         //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
-        String nomeFicheiroIn = Validacoes.verificaFicheiro(sc,"",interativo);
+        String nomeFicheiroIn = OperacaoFicheiros.verificaFicheiro(sc,"",interativo);
 
         //Pede e verifica intervalo de passo de integração (o 0 é inútil no caso interativo)
         double h = Validacoes.verificaPassoIntegracao(sc,0, interativo);
@@ -159,11 +136,11 @@ public class Main {
 
         //Array dos nomes
         String[] arrNomes = new String[numLinhas];
-        preencherNomes(arrNomes, nomeFicheiroIn);
+        OperacaoFicheiros.preencherNomes(arrNomes, nomeFicheiroIn);
 
         //Array de Valores
         double[][] arrValores = new double[numLinhas][4];
-        preencherValores(arrValores, nomeFicheiroIn);
+        OperacaoFicheiros.preencherValores(arrValores, nomeFicheiroIn);
 
         System.out.println("Lista de opções a escolher:");
 
@@ -218,14 +195,4 @@ public class Main {
             Gnuplot.gerarGrafGnuPlot(arrNomes[opcaoSelecionada]+ nomeFicheiro, interativo);
         }
     }
-
-
-
-
-
-
-
-
-
-
 }
