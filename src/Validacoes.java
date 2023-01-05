@@ -21,7 +21,7 @@ public class Validacoes {
     }
 
     public static boolean verificaIntervaloDoisNumeros(double num, int numMenor, int numMaior) {
-        if (num <= numMenor || num >= numMaior) {
+        if (num <= numMenor || num > numMaior) {
             return false;
         } else {
             return true;
