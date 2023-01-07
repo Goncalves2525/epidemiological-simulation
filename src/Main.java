@@ -36,7 +36,7 @@ public class Main {
         }
 
         paramP = Validacoes.verificaPassoIntegracao(sc,Double.parseDouble(argumentos[4]),interativo);
-        if(paramP <= -1){
+        if(paramP <= 0 || paramP > 1){
             inputValido = false;
         }
 
