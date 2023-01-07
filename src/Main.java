@@ -11,22 +11,21 @@ public class Main {
         if ((args.length == 0)) {
             mostrarMenuOpcoes(sc);
         } else {
-            lerArgumentosLinhaComandos(args, sc);
+            lerArgumentosLinhaComandos(args);
         }
     }
 
-    public static void lerArgumentosLinhaComandos(String[] argumentos, Scanner sc) throws IOException {
-        boolean interativo = false; //método não interativo, nunca será mudado o valor
+    public static void lerArgumentosLinhaComandos(String[] argumentos) throws IOException {
         boolean inputValido = true;
         String nomeFicheiroEntrada = "";
         //-m X -p Y -t Z -d K ficheiroResultado.csv
         int paramM = 0;  //método a usar
-        double paramP = 0;  //passo h 0<x<1
+        double paramP = 0;  //passo h 0<x<=1
         int paramT = 0;  // populacao >0
         int paramD = 0;  //num dias; d>0
         double varn = 0;
 
-        nomeFicheiroEntrada = OperacaoFicheiros.verificaFicheiro(sc,argumentos[0],interativo);
+        nomeFicheiroEntrada = argumentos[0];
         if (nomeFicheiroEntrada.indexOf(".csv") == -1) {
             inputValido = false;
         }
@@ -34,18 +33,15 @@ public class Main {
         if (paramM != 1 && paramM != 2) {
             inputValido = false;
         }
-
-        paramP = Validacoes.verificaPassoIntegracao(sc,Double.parseDouble(argumentos[4]),interativo);
-        if(paramP <= 0 || paramP > 1){
+        paramP = Double.parseDouble(argumentos[4]);
+        if (paramP < 0 || paramP > 1) {
             inputValido = false;
         }
-
-        paramT = Validacoes.verificaTamanhoPopulacao(sc,Integer.parseInt(argumentos[6]),interativo);
+        paramT = Integer.parseInt(argumentos[6]);
         if (paramT < 0) {
             inputValido = false;
         }
-
-        paramD = Validacoes.verificaNumeroDias(sc,Integer.parseInt(argumentos[8]),interativo);
+        paramD = Integer.parseInt(argumentos[8]);
         if (paramD < 0) {
             inputValido = false;
         }
@@ -122,14 +118,14 @@ public class Main {
         //Pede e verifica o nome do ficheiro de entrada de dados e verifica se é válido
         String nomeFicheiroIn = OperacaoFicheiros.verificaFicheiro(sc,"",interativo);
 
-        //Pede e verifica intervalo de passo de integração (o 0 é inútil no caso interativo)
-        double h = Validacoes.verificaPassoIntegracao(sc,0, interativo);
+        //Pede e verifica intervalo de passo de integração
+        double h = Validacoes.verificaPassoIntegracao(sc);
 
-        //Pede e verifica tamanho da população (o 0 é inútil no caso interativo)
-        int N = Validacoes.verificaTamanhoPopulacao(sc, 0, interativo);
+        //Pede e verifica tamanho da população
+        int N = Validacoes.verificaTamanhoPopulacao(sc);
 
-        //Pede e verifica numero de dias da análise (o 0 é inútil no caso interativo)
-        int dias = Validacoes.verificaNumeroDias(sc,0,interativo);
+        //Pede e verifica numero de dias da análise
+        int dias = Validacoes.verificaNumeroDias(sc);
 
         //Contar linhas ficheiro menos a primeira linha (neste caso é o título)
         int numLinhas = OperacaoFicheiros.contarLinhasFicheiro(nomeFicheiroIn) - 1;
