@@ -1,0 +1,131 @@
+Index: src/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Main.java b/src/Main.java
+--- a/src/Main.java	
++++ b/src/Main.java	
+@@ -1,5 +1,9 @@
++import java.util.Scanner;
++
+ public class Main {
+     public static void main(String[] args) {
++
++
+         System.out.println("babanas locas!");
+ 
+         System.out.println("Teste");
+@@ -10,4 +14,23 @@
+     }
+ 
+ 
++    static double metodoEuler() {
++        Scanner sc = new Scanner(System.in);
++
++        int x0 = sc.nextInt();
++        double y0 = sc.nextDouble();
++        int nPassos = sc.nextInt();
++        double passo = sc.nextDouble(), yn;
++        int i = 0;
++
++        do {
++            yn = y0 + passo * f(x0 + i * passo, y0);
++            y0 = yn;
++            i += 1;
++        } while (i < nPassos);
++
++        return yn;
++    }
++
++
+ }
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -4,8 +4,9 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="teste">
++    <list default="true" id="34b39b2d-af57-40ce-834c-0c4723236d8f" name="Changes" comment="Tentar compreender sincronização entre utilizaodres">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -30,13 +31,13 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "settings.editor.selected.configurable": "project.propVCSSupport.CommitDialog"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;project.propVCSSupport.CommitDialog&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+@@ -88,7 +89,35 @@
+       <option name="project" value="LOCAL" />
+       <updated>1670926848425</updated>
+     </task>
+-    <option name="localTasksCounter" value="7" />
++    <task id="LOCAL-00007" summary="teste">
++      <created>1670956381390</created>
++      <option name="number" value="00007" />
++      <option name="presentableId" value="LOCAL-00007" />
++      <option name="project" value="LOCAL" />
++      <updated>1670956381390</updated>
++    </task>
++    <task id="LOCAL-00008" summary="Verificar sobreposição de escrita">
++      <created>1671135743754</created>
++      <option name="number" value="00008" />
++      <option name="presentableId" value="LOCAL-00008" />
++      <option name="project" value="LOCAL" />
++      <updated>1671135743754</updated>
++    </task>
++    <task id="LOCAL-00009" summary="Verificar sobreposição de escrita 2">
++      <created>1671135846987</created>
++      <option name="number" value="00009" />
++      <option name="presentableId" value="LOCAL-00009" />
++      <option name="project" value="LOCAL" />
++      <updated>1671135846987</updated>
++    </task>
++    <task id="LOCAL-00010" summary="Tentar compreender sincronização entre utilizaodres">
++      <created>1671136528147</created>
++      <option name="number" value="00010" />
++      <option name="presentableId" value="LOCAL-00010" />
++      <option name="project" value="LOCAL" />
++      <updated>1671136528147</updated>
++    </task>
++    <option name="localTasksCounter" value="11" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -117,6 +146,9 @@
+   <component name="VcsManagerConfiguration">
+     <MESSAGE value="commit fix" />
+     <MESSAGE value="teste" />
+-    <option name="LAST_COMMIT_MESSAGE" value="teste" />
++    <MESSAGE value="Verificar sobreposição de escrita" />
++    <MESSAGE value="Verificar sobreposição de escrita 2" />
++    <MESSAGE value="Tentar compreender sincronização entre utilizaodres" />
++    <option name="LAST_COMMIT_MESSAGE" value="Tentar compreender sincronização entre utilizaodres" />
+   </component>
+ </project>
+\ No newline at end of file

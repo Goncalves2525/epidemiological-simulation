@@ -81,9 +81,6 @@ public class Main {
         }
     }
 
-
-
-
     public static void mostrarMenuOpcoes(Scanner sc) throws IOException {
         boolean opcaoValida = false;
         int opcao = 0;
