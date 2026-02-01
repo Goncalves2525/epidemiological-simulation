@@ -5,9 +5,19 @@ import java.util.Scanner;
 
 public class OperacaoFicheiros {
 
-    public static void escreverParaCsv(double[][] matriz, String nomeFicheiroSaida) throws FileNotFoundException {
+    private static final String OUTPUT_DIR = "outputs";
 
-        PrintWriter out = new PrintWriter(nomeFicheiroSaida + ".csv");
+    public static String prepararDiretorioOutputs() {
+        File dir = new File(OUTPUT_DIR);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        return OUTPUT_DIR + File.separator;
+    }
+
+    public static void escreverParaCsv(double[][] matriz, String nomeFicheiroSaida) throws FileNotFoundException {
+        String caminhoCompleto = prepararDiretorioOutputs() + nomeFicheiroSaida;
+        PrintWriter out = new PrintWriter(caminhoCompleto + ".csv");
         out.println("dias" + ";" + "S" + ";" + "I" + ";" + "R" + ";" + "N");
         for (int i = 0; i < matriz.length; i++) {
             out.println(i + ";" + matriz[i][1] + ";" + matriz[i][2] + ";" + matriz[i][3] + ";" + matriz[i][4]);
