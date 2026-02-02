@@ -2,6 +2,14 @@
 
 This project implements an epidemiological simulator using the SEIR model (Susceptible-Exposed-Infectious-Recovered) with differential equations. It offers two numerical integration methods: Euler's Method and 4th order Runge-Kutta Method (RK4).
 
+## Screenshots
+
+### Application Menu
+![Application Menu](images/menu.png)
+
+### Example Simulation Graph
+![Gnuplot Output](images/gnuplot.png)
+
 ## Requirements
 
 - Java Development Kit (JDK) 8 or higher
